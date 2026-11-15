@@ -12,6 +12,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,26 +25,48 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout
+      # 1. Get website code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
+      # 3. Install dependencies
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Website
+      # 4. Build for GitHub Pages
+      - name: Build for GitHub Pages
         run: npm run build
 
-      - name: Upload Website
+      # 5. Upload GitHub Pages build
+      - name: Upload GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-      - name: Deploy Website
+      # 6. Deploy GitHub Pages
+      - name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 7. Build for Hostinger Main Domain
+      - name: Build for Hostinger
+        run: npm run build -- --base=/
+
+      # 8. Deploy to Hostinger
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./dist/
+          server-dir: /public_html/
