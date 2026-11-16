@@ -54,6 +54,7 @@ function App() {
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />
+            <Route path="/Vaani360media" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/pricing" element={<PricingSection />} />
           <Route path="/contact" element={<Contact />} />

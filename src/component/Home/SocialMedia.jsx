@@ -238,31 +238,31 @@ export default function SocialMediaShowcase() {
         {/* Transformation Section */}
         <div
           key={activeTab}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start animate-[fadeIn_.4s_ease]"
+          className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-8 items-start animate-[fadeIn_.4s_ease]"
         >
 
           {/* BEFORE */}
-          <div>
-            <div className="flex items-center justify-between mb-4 px-1">
+          <div className="min-w-0">
+            <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 gap-1">
 
               <div>
-                <span className="text-gray-400 text-xs font-semibold uppercase tracking-widest">
+                <span className="text-[9px] sm:text-xs text-gray-400 font-semibold uppercase tracking-wider sm:tracking-widest">
                   01 / BEFORE
                 </span>
 
-                <h3 className="text-xl font-bold text-gray-800 mt-1">
+                <h3 className="text-sm sm:text-xl font-bold text-gray-800 mt-1 leading-tight">
                   Before Management
                 </h3>
               </div>
 
-              <span className="text-xs text-gray-400 bg-gray-100 rounded-full px-3 py-1.5">
+              <span className="text-[9px] sm:text-xs text-gray-400 bg-gray-100 rounded-full px-2 sm:px-3 py-1 sm:py-1.5 shrink-0">
                 Previous
               </span>
 
             </div>
 
             {activeTab === "instagram" ? (
-              <div className="bg-white p-2 rounded-2xl border border-gray-200 shadow-sm">
+              <div className="min-w-0 bg-white p-1 sm:p-2 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
                 <img
                   src={instagramBefore}
                   alt="Instagram Before Management"
@@ -270,7 +270,7 @@ export default function SocialMediaShowcase() {
                 />
               </div>
             ) : (
-              <div className="bg-white p-2 rounded-2xl border border-gray-200 shadow-sm">
+              <div className="min-w-0 bg-white p-1 sm:p-2 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
                 <img
                   src={youtubeBefore}
                   alt="YouTube Before Management"
@@ -282,27 +282,27 @@ export default function SocialMediaShowcase() {
           </div>
 
           {/* AFTER */}
-          <div>
-            <div className="flex items-center justify-between mb-4 px-1">
+          <div className="min-w-0">
+            <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 gap-1">
 
               <div>
-                <span className="text-orange-500 text-xs font-semibold uppercase tracking-widest">
+                <span className="text-[9px] sm:text-xs text-orange-500 font-semibold uppercase tracking-wider sm:tracking-widest">
                   02 / AFTER
                 </span>
 
-                <h3 className="text-xl font-bold text-gray-900 mt-1">
+                <h3 className="text-sm sm:text-xl font-bold text-gray-900 mt-1 leading-tight">
                   With Our Management
                 </h3>
               </div>
 
-              <span className="text-xs text-orange-600 bg-orange-50 border border-orange-100 rounded-full px-3 py-1.5">
+              <span className="text-[9px] sm:text-xs text-orange-600 bg-orange-50 border border-orange-100 rounded-full px-2 sm:px-3 py-1 sm:py-1.5 shrink-0">
                 Our Work
               </span>
 
             </div>
 
             {activeTab === "instagram" ? (
-              <div className="bg-white p-2 rounded-2xl border border-orange-200 shadow-[0_10px_35px_rgba(249,115,22,0.08)]">
+              <div className="min-w-0 bg-white p-1 sm:p-2 rounded-xl sm:rounded-2xl border border-orange-200 shadow-[0_10px_35px_rgba(249,115,22,0.08)]">
                 <img
                   src={instagramAfter}
                   alt="Instagram After Management"
@@ -310,7 +310,7 @@ export default function SocialMediaShowcase() {
                 />
               </div>
             ) : (
-              <div className="bg-white p-2 rounded-2xl border border-orange-200 shadow-[0_10px_35px_rgba(249,115,22,0.08)]">
+              <div className="min-w-0 bg-white p-1 sm:p-2 rounded-xl sm:rounded-2xl border border-orange-200 shadow-[0_10px_35px_rgba(249,115,22,0.08)]">
                 <img
                   src={youtubeAfter}
                   alt="YouTube After Management"

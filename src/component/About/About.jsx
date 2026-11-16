@@ -7,7 +7,7 @@ import ProductPhotography from "../../assets/WorkImage/Product Photography.png";
 import MarketingGrowth from "../../assets/WorkImage/Marketing & Growth.png";
 
 const SEO_KEYWORDS = [
-  "Elevion Media",
+  "Vaani 360 Media",
   "devotional social media management",
   "spiritual social media management",
   "devotional video editing",
@@ -26,6 +26,9 @@ const SEO_KEYWORDS = [
   "darbar promotion",
   "devotional graphic design",
   "spiritual website design",
+  "temple website development",
+  "trust website design",
+  "ashram website development",
   "spiritual brand marketing",
 ];
 
@@ -34,10 +37,10 @@ export default function WhiteServicesUI() {
 
   useEffect(() => {
     const title =
-      "Devotional & Spiritual Digital Services | Elevion Media";
+      "Spiritual Digital Services | Vaani 360 Media";
 
     const description =
-      "Elevion Media provides devotional and spiritual social media management, video editing, graphic design, website design, product photography and digital marketing for Baba Ji, gurus, spiritual creators and devotional brands.";
+      "Vaani 360 Media provides website development, website design, devotional and spiritual social media management, video editing, graphic design, product photography and digital marketing for temples, trusts, ashrams, spiritual leaders and devotional brands.";
 
     document.title = title;
 
@@ -60,6 +63,12 @@ export default function WhiteServicesUI() {
 
   const services = [
     {
+      title: "Website Development & Design",
+      img: WebsiteDesign,
+      tag: "WEB",
+      bg: "bg-[#fff1f2]",
+    },
+    {
       title: "Video Editing",
       img: VideoEditing,
       tag: "VIDEO",
@@ -70,12 +79,6 @@ export default function WhiteServicesUI() {
       img: GraphicDesign,
       tag: "DESIGN",
       bg: "bg-[#fefce8]",
-    },
-    {
-      title: "Website Design",
-      img: WebsiteDesign,
-      tag: "WEB",
-      bg: "bg-[#fff1f2]",
     },
     {
       title: "Product Photography",
@@ -393,8 +396,8 @@ export default function WhiteServicesUI() {
             <div className="relative flex items-center justify-center px-1 mt-2 overflow-hidden">
               <img
                 src={item.img}
-                alt={`${item.title} - Elevion Media spiritual digital service`}
-                title={`${item.title} | Elevion Media`}
+                alt={`${item.title} - Vaani 360 Media spiritual digital service`}
+                title={`${item.title} | Vaani 360 Media`}
                 className="temple-card-image"
               />
             </div>
@@ -421,10 +424,10 @@ export default function WhiteServicesUI() {
       {/* SEO CONTEXT */}
       <div className="relative z-10 max-w-5xl mx-auto mt-14 text-center">
         <p className="text-sm leading-7 text-[#705746]">
-          Elevion Media specializes in devotional and spiritual social media
-          management, devotional video editing, spiritual graphic design,
-          website design, product photography and digital marketing for
-          spiritual creators, Baba Ji, gurus and devotional brands.
+          Vaani 360 Media specializes in website development and design,
+          devotional video editing, spiritual graphic design, social media
+          management, product photography and digital marketing for temples,
+          trusts, ashrams, spiritual leaders and devotional brands.
         </p>
       </div>
 

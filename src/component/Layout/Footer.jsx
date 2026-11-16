@@ -1,56 +1,49 @@
-import { useState } from "react";
-import {
-  Instagram,
-  Facebook,
-  Youtube,
-  Linkedin,
-  Phone,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Instagram, Facebook, Youtube, Linkedin, Phone, ArrowUpRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
-// 👇 Path apne folder structure ke hisaab se adjust kar lena
-// Agar Footer aur Navbar alag folder me hain to path change karo, jaise "../Navbar/BookDemoModal"
 import BookDemoModal from "./BookDemoModal";
 
+/* ───────────────────────── DATA ───────────────────────── */
+
+// Logo ko /public folder me "logo.png" naam se rakho (ya path badal do)
+const LOGO_SRC = "/logo.png";
+
 const quickLinks = [
-  { icon: "🎬", title: "Video Editing",           sub: "Cinematic cuts, reels & ads",   to: "/services/video-editing" },
-  { icon: "🎨", title: "Graphic Design",          sub: "Logos, posts & brand visuals",  to: "/services/graphic-design" },
-  { icon: "📱", title: "Social Media Marketing",  sub: "Grow reach, drive engagement",  to: "/services/social-media-marketing" },
-  { icon: "💻", title: "Website / Web Dev",       sub: "Fast, modern & responsive",     to: "/services/web-development" },
+  { icon: "🎬", title: "Video Editing",          sub: "Cinematic cuts, reels & ads",  to: "/services/video-editing" },
+  { icon: "🎨", title: "Graphic Design",         sub: "Logos, posts & brand visuals", to: "/services/graphic-design" },
+  { icon: "📱", title: "Social Media Marketing", sub: "Grow reach, drive engagement", to: "/services/social-media-marketing" },
+  { icon: "💻", title: "Website / Web Dev",      sub: "Fast, modern & responsive",    to: "/services/web-development" },
 ];
 
 const features = [
   "Social Media Marketing",
-  "Search Engine Optimization ",
+  "Search Engine Optimization",
   "Paid Ads (Advertising)",
   "Content Creation",
-  "Graphics banana ",
+  "Graphic Design",
   "Email Marketing",
   "Website Management",
   "Digital Marketing Jobs",
 ];
 
-// Resources ab route pe navigate karenge
 const resources = [
   { title: "Blogs", to: "/blog" },
   { title: "How it works", to: "/how-it-works" },
   { title: "FAQ's", to: "/faq" },
 ];
 
-// Legal links ab modal open karenge (route pe navigate nahi)
 const legal = [
   {
     title: "Terms and Conditions",
-    content: `Term and condition 
-
-Terms & Conditions
+    content: `Terms & Conditions
 
 Last Updated: 18 August 2026
 
-Welcome to Elevion Media. By accessing our website, contacting us, purchasing our services, or engaging us for any project, you agree to the following Terms & Conditions.
+Welcome to Vaani 360 Media. By accessing our website, contacting us, purchasing our services, or engaging us for any project, you agree to the following Terms & Conditions.
 
-1. About Elevion Media
+1. About Vaani 360 Media
 
-Elevion Media provides digital media, creative, social media and digital marketing services, particularly for spiritual gurus, katha vachaks, temples, ashrams, spiritual institutions and devotional brands.
+Vaani 360 Media provides digital media, creative, social media and digital marketing services, particularly for spiritual gurus, katha vachaks, temples, ashrams, spiritual institutions and devotional brands.
 
 Our services may include:
 
@@ -75,7 +68,7 @@ The exact services provided will depend on the proposal, quotation, package or w
 
 Clients must provide accurate information, content, photographs, videos, logos, account access and other materials required for the project.
 
-The client is responsible for ensuring that the information and materials supplied to Elevion Media are accurate and do not infringe any third-party rights.
+The client is responsible for ensuring that the information and materials supplied to Vaani 360 Media are accurate and do not infringe any third-party rights.
 
 For religious and spiritual content, the client is responsible for confirming the accuracy of dates, names, religious references, event information, quotations and other factual details before approval.
 
@@ -83,7 +76,7 @@ For religious and spiritual content, the client is responsible for confirming th
 
 The client is responsible for reviewing and approving content before publication where approval is required.
 
-Once content has been approved, Elevion Media may publish or deliver the approved content.
+Once content has been approved, Vaani 360 Media may publish or deliver the approved content.
 
 Any mistake in information supplied or approved by the client may be the client's responsibility.
 
@@ -108,7 +101,7 @@ Unless otherwise agreed:
 
 6. Advertising Services
 
-Advertising spend paid to Google, Meta or another advertising platform is separate from Elevion Media's service fee unless otherwise stated.
+Advertising spend paid to Google, Meta or another advertising platform is separate from Vaani 360 Media's service fee unless otherwise stated.
 
 We do not guarantee a specific number of leads, sales, followers, views, reach, conversions or revenue.
 
@@ -118,11 +111,11 @@ Results may depend on budget, audience, competition, creative quality, market co
 
 Our services may involve third-party platforms including Instagram, Facebook, YouTube, Google, Meta, LinkedIn, Pinterest and other services.
 
-Elevion Media is not responsible for platform outages, algorithm changes, account restrictions, suspensions, policy changes, technical failures or other actions taken by third-party platforms.
+Vaani 360 Media is not responsible for platform outages, algorithm changes, account restrictions, suspensions, policy changes, technical failures or other actions taken by third-party platforms.
 
 8. Intellectual Property
 
-Unless otherwise agreed in writing, Elevion Media retains ownership of its original concepts, templates, working files, source files, internal processes and reusable creative assets.
+Unless otherwise agreed in writing, Vaani 360 Media retains ownership of its original concepts, templates, working files, source files, internal processes and reusable creative assets.
 
 Upon full payment, the client receives the agreed usage rights for the final deliverables.
 
@@ -132,13 +125,13 @@ Third-party assets may be subject to separate licensing terms.
 
 9. Client-Supplied Content
 
-The client grants Elevion Media permission to use supplied photographs, videos, logos, text, audio, trademarks and other materials for the purpose of providing the agreed services.
+The client grants Vaani 360 Media permission to use supplied photographs, videos, logos, text, audio, trademarks and other materials for the purpose of providing the agreed services.
 
 The client represents that it has the necessary rights and permissions to provide such materials.
 
 10. Portfolio Usage
 
-Unless otherwise agreed in writing, Elevion Media may display completed work in its portfolio, website, social media, presentations and promotional materials.
+Unless otherwise agreed in writing, Vaani 360 Media may display completed work in its portfolio, website, social media, presentations and promotional materials.
 
 Confidential projects may be excluded where specifically agreed.
 
@@ -154,7 +147,7 @@ Any refund will be subject to the applicable agreement and law.
 
 Digital marketing results cannot be guaranteed.
 
-Elevion Media does not guarantee:
+Vaani 360 Media does not guarantee:
 
 * Viral content
 * Specific follower growth
@@ -169,17 +162,17 @@ We provide professional services based on the agreed scope and strategy.
 
 13. Limitation of Liability
 
-To the extent permitted by applicable law, Elevion Media will not be responsible for indirect or consequential losses arising from circumstances outside its reasonable control, including third-party platform changes, account restrictions, outages, algorithm changes or loss of business opportunities.
+To the extent permitted by applicable law, Vaani 360 Media will not be responsible for indirect or consequential losses arising from circumstances outside its reasonable control, including third-party platform changes, account restrictions, outages, algorithm changes or loss of business opportunities.
 
 Nothing in these Terms excludes liability that cannot legally be excluded.
 
 14. Force Majeure
 
-Elevion Media will not be responsible for delays caused by circumstances beyond reasonable control, including natural disasters, government actions, infrastructure failures, internet outages, cyber incidents, strikes or third-party service failures.
+Vaani 360 Media will not be responsible for delays caused by circumstances beyond reasonable control, including natural disasters, government actions, infrastructure failures, internet outages, cyber incidents, strikes or third-party service failures.
 
 15. Changes to Terms
 
-Elevion Media may update these Terms & Conditions from time to time.
+Vaani 360 Media may update these Terms & Conditions from time to time.
 
 The latest version published on the website will apply prospectively, subject to any separate agreement with a client.
 
@@ -191,11 +184,12 @@ Disputes should first be attempted to be resolved amicably. If a dispute cannot 
 
 17. Contact
 
-Elevion Media
+Vaani 360 Media
 
-📞 8287686509
-📧 hello@elevionmedia.com
-🌐 www.elevionmedia.com
+📞 9315284073
+Contact us through our website or WhatsApp
+🌐 https://vaani360media.in
+📍 B-Block, 11/1, Ekta Vihar, Near Hindon Airport, Ghaziabad, Uttar Pradesh – 201005, India
 
 Digital Media for Spirituality, Faith & Impact.`,
   },
@@ -205,7 +199,7 @@ Digital Media for Spirituality, Faith & Impact.`,
 
 Last Updated: 18 August 2026
 
-Elevion Media respects your privacy and is committed to handling personal information responsibly.
+Vaani 360 Media respects your privacy and is committed to handling personal information responsibly.
 
 This Privacy Policy explains what information we may collect, why we collect it, how we use it and the choices available to you.
 
@@ -290,7 +284,7 @@ When information is no longer required, we may delete, anonymise or securely dis
 
 Our website or communications may contain links to third-party websites and platforms.
 
-Elevion Media is not responsible for the privacy practices of third-party websites.
+Vaani 360 Media is not responsible for the privacy practices of third-party websites.
 
 Users should review the privacy policies of those platforms separately.
 
@@ -316,11 +310,12 @@ The updated version will be published on this page with a revised "Last Updated"
 
 For privacy-related questions or requests:
 
-Elevion Media
+Vaani 360 Media
 
-📧 hello@elevionmedia.com
-📞 8287686509
-🌐 www.elevionmedia.com
+Contact us through our website or WhatsApp
+📞 9315284073
+🌐 https://vaani360media.in
+📍 B-Block, 11/1, Ekta Vihar, Near Hindon Airport, Ghaziabad, Uttar Pradesh – 201005, India
 
 Digital Media for Spirituality, Faith & Impact.`,
   },
@@ -330,7 +325,7 @@ Digital Media for Spirituality, Faith & Impact.`,
 
 Last Updated: 18 August 2026
 
-Elevion Media is committed to protecting personal data handled in connection with its website, clients, employees, service providers and business operations.
+Vaani 360 Media is committed to protecting personal data handled in connection with its website, clients, employees, service providers and business operations.
 
 This policy describes our approach to protecting personal data and should be read together with our Privacy Policy and Terms & Conditions.
 
@@ -338,7 +333,7 @@ This policy describes our approach to protecting personal data and should be rea
 
 The purpose of this policy is to establish principles for responsible collection, use, storage, access, sharing and deletion of personal data.
 
-Elevion Media aims to process personal data lawfully, fairly and transparently and to use it only for appropriate business purposes.
+Vaani 360 Media aims to process personal data lawfully, fairly and transparently and to use it only for appropriate business purposes.
 
 2. Personal Data We Handle
 
@@ -382,7 +377,7 @@ Where practical, access should be protected through passwords, authentication co
 
 6. Data Security
 
-Elevion Media takes reasonable security measures appropriate to the nature of the information handled.
+Vaani 360 Media takes reasonable security measures appropriate to the nature of the information handled.
 
 These may include:
 
@@ -423,13 +418,13 @@ When retention is no longer necessary, data may be deleted, anonymised or secure
 
 10. Data Breach & Security Incidents
 
-If Elevion Media becomes aware of a personal-data security incident, we will assess the incident and take reasonable steps appropriate to the circumstances.
+If Vaani 360 Media becomes aware of a personal-data security incident, we will assess the incident and take reasonable steps appropriate to the circumstances.
 
 Where notification is legally required, applicable notification requirements will be followed.
 
 11. Client Responsibilities
 
-Clients are responsible for ensuring that personal information supplied to Elevion Media has been collected and shared with us lawfully and with appropriate permissions where required.
+Clients are responsible for ensuring that personal information supplied to Vaani 360 Media has been collected and shared with us lawfully and with appropriate permissions where required.
 
 Clients should not provide unnecessary personal or sensitive information through ordinary communication channels.
 
@@ -443,7 +438,7 @@ Such requests will be handled in accordance with applicable law and the provisio
 
 13. Compliance
 
-Elevion Media intends to maintain its data-handling practices in accordance with applicable Indian laws and regulations, including the Digital Personal Data Protection Act, 2023 and applicable rules and provisions as they come into force. The Act contains provisions concerning notice, consent, security safeguards, breach handling, individual rights and grievance redressal.
+Vaani 360 Media intends to maintain its data-handling practices in accordance with applicable Indian laws and regulations, including the Digital Personal Data Protection Act, 2023 and applicable rules and provisions as they come into force. The Act contains provisions concerning notice, consent, security safeguards, breach handling, individual rights and grievance redressal.
 
 The Digital Personal Data Protection Rules, 2025 were notified by the Ministry of Electronics and Information Technology on 13 November 2025 and provide the implementation framework for the Act. Their provisions have a phased commencement schedule.
 
@@ -457,91 +452,120 @@ The latest version will be published on our website.
 
 For data-protection or privacy-related questions:
 
-Elevion Media
+Vaani 360 Media
 
-📧 hello@elevionmedia.com
-📞 8287686509
-🌐 www.elevionmedia.com
+Contact us through our website or WhatsApp
+📞 9315284073
+🌐 https://vaani360media.in
+📍 B-Block, 11/1, Ekta Vihar, Near Hindon Airport, Ghaziabad, Uttar Pradesh – 201005, India
 
 Digital Media for Spirituality, Faith & Impact.`,
   },
 ];
 
-/* ── tiny Om divider ── */
-const OmDivider = () => (
-  <div className="flex items-center gap-2 mb-5">
-    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#E8C878]/60" />
-    <span className="text-[#B8860B] text-[10px] tracking-[0.3em] font-['Cinzel',serif]">✦</span>
-    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#E8C878]/60" />
-  </div>
-);
+const socials = [
+  { label: "Instagram", href: "https://www.google.com/search?q=Vaani+360+Media+Instagram", Icon: Instagram },
+  { label: "Facebook",  href: "https://www.google.com/search?q=Vaani+360+Media+Facebook",       Icon: Facebook },
+  { label: "YouTube",   href: "https://www.google.com/search?q=Vaani+360+Media+YouTube", Icon: Youtube },
+  { label: "LinkedIn",  href: "https://www.google.com/search?q=Vaani+360+Media+LinkedIn",  Icon: Linkedin },
+];
 
-/* ── section heading ── */
+const WHATSAPP_URL = "https://wa.me/919315284073?text=Hello%2C%20I%27m%20interested%20in%20your%20services."; 
+
+/* ───────────────────────── STYLE TOKENS ───────────────────────── */
+// Logo colors: orange #F25500 · charcoal #232323
+
+// Liquid glass surface: frosted blur + bright top edge highlight + soft depth
+const glass =
+  "bg-white/45 backdrop-blur-2xl backdrop-saturate-150 border border-white/70 " +
+  "shadow-[0_10px_40px_-12px_rgba(35,35,35,0.14),inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-1px_0_rgba(255,255,255,0.35)]";
+
+const glassHover =
+  "transition-all duration-300 ease-out hover:bg-white/65 hover:-translate-y-0.5 " +
+  "hover:shadow-[0_16px_44px_-12px_rgba(242,85,0,0.22),inset_0_1px_0_rgba(255,255,255,1)]";
+
+/* ───────────────────────── SMALL PARTS ───────────────────────── */
+
 const FooterHeading = ({ children }) => (
-  <h3 className="text-3xl md:text-4xl font-extrabold text-[#B8860B]/70 mb-2
-    [font-family:'Cinzel',serif] tracking-wide leading-tight">
+  <h3 className="text-[13px] font-semibold tracking-[0.02em] text-[#F25500] mb-5">
     {children}
   </h3>
 );
 
-/* ── link item (route wale links ke liye) ── */
-const FooterLink = ({ to, onClick, children }) => (
-  <li>
-    {to ? (
-      <Link
-        to={to}
-        className="flex items-center gap-2 text-[#7A5C2E] text-[15px] md:text-base
-          [font-family:'Cormorant_Garamond',serif] font-medium
-          hover:text-[#B8860B] transition-colors duration-200 group">
-        <span className="w-1 h-1 rounded-full bg-[#E8C878]/50 group-hover:bg-[#B8860B]
-          transition-colors duration-200 flex-shrink-0" />
-        {children}
-      </Link>
-    ) : (
-      <button
-        onClick={onClick}
-        className="flex items-center gap-2 text-[#7A5C2E] text-[15px] md:text-base
-          [font-family:'Cormorant_Garamond',serif] font-medium text-left
-          hover:text-[#B8860B] transition-colors duration-200 group">
-        <span className="w-1 h-1 rounded-full bg-[#E8C878]/50 group-hover:bg-[#B8860B]
-          transition-colors duration-200 flex-shrink-0" />
-        {children}
-      </button>
-    )}
-  </li>
-);
+const TextLink = ({ to, onClick, children }) => {
+  const cls =
+    "group inline-flex items-center gap-1.5 text-[15px] font-medium text-[#232323]/75 " +
+    "hover:text-[#F25500] transition-colors duration-200 text-left";
+  const arrow = (
+    <ArrowUpRight
+      size={13}
+      className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+    />
+  );
+  return (
+    <li>
+      {to ? (
+        <Link to={to} className={cls}>{children}{arrow}</Link>
+      ) : (
+        <button type="button" onClick={onClick} className={cls}>{children}{arrow}</button>
+      )}
+    </li>
+  );
+};
 
-/* ── simple legal modal (Terms / Privacy / Data Protection) ── */
+/* Legal modal — liquid glass sheet */
 const LegalModal = ({ item, onClose }) => {
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [item, onClose]);
+
   if (!item) return null;
+
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#232323]/30 backdrop-blur-md"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.title}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#FDFAF3] border border-[#E8C878] rounded-2xl max-w-lg w-full
-          max-h-[80vh] overflow-y-auto p-6 shadow-[0_20px_60px_rgba(26,10,0,0.3)]"
+        className="relative w-full max-w-2xl max-h-[82vh] flex flex-col overflow-hidden rounded-[28px]
+          bg-[#FDFAF3]/80 backdrop-blur-3xl backdrop-saturate-150 border border-white/80
+          shadow-[0_30px_80px_-20px_rgba(35,35,35,0.45),inset_0_1px_0_rgba(255,255,255,1)]"
       >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-[#1A1008] [font-family:'Cinzel',serif]">
-            {item.title}
-          </h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#232323]/10">
+          <h2 className="text-[17px] font-semibold text-[#232323] tracking-tight">{item.title}</h2>
           <button
+            type="button"
             onClick={onClose}
-            className="text-[#5C4020] hover:text-[#B8860B] text-lg font-bold px-2"
+            aria-label="Close"
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-[#232323]/8 text-[#232323]/70
+              hover:bg-[#F25500] hover:text-white transition-colors duration-200"
           >
-            ✕
+            <X size={16} strokeWidth={2.4} />
           </button>
         </div>
-        <p className="text-[#5C4020] text-sm leading-relaxed [font-family:'Cormorant_Garamond',serif]">
-          {item.content}
-        </p>
+        <div className="overflow-y-auto px-6 py-5">
+          <p className="whitespace-pre-line text-[14px] leading-[1.75] text-[#232323]/75">
+            {item.content}
+          </p>
+        </div>
       </div>
     </div>
   );
 };
+
+/* ───────────────────────── FOOTER ───────────────────────── */
 
 export default function Footer() {
   const [demoOpen, setDemoOpen] = useState(false);
@@ -550,298 +574,211 @@ export default function Footer() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-        .elevion-footer,
-        .elevion-footer * {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap');
+        .vaani-footer, .vaani-footer * {
+          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Noto Sans Devanagari', sans-serif;
           font-style: normal;
+          -webkit-font-smoothing: antialiased;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .vaani-footer * { animation: none !important; transition: none !important; }
         }
       `}</style>
-      <footer className="elevion-footer relative bg-[#FDFAF3] border-t border-[#E8C878]/50 overflow-hidden">
 
-      {/* Top gold shimmer */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#E8C878] to-transparent" />
+      <footer className="vaani-footer relative bg-[#FDFAF3] border-t border-[#E8C878]/50 overflow-hidden">
+        {/* Top gold shimmer */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#E8C878] to-transparent" />
 
-      {/* Dot pattern bg */}
-      <div
-        className="absolute inset-0 opacity-25 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, #D4A85A 1px, transparent 1px)",
-          backgroundSize: "26px 26px",
-        }}
-      />
+        {/* Dot pattern (same background as before) */}
+        <div
+          className="absolute inset-0 opacity-25 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, #D4A85A 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+          }}
+        />
 
-      {/* Mandala top-right */}
-      <div className="absolute -top-12 -right-12 opacity-[0.06] pointer-events-none">
-        <svg viewBox="0 0 120 120" className="w-52 h-52 animate-[spin_90s_linear_infinite]">
-          {[0,30,60,90,120,150].map((d, i) => (
-            <g key={i} transform={`rotate(${d} 60 60)`}>
-              <ellipse cx="60" cy="14" rx="5" ry="13" fill="#B8860B" />
-              <ellipse cx="60" cy="106" rx="5" ry="13" fill="#B8860B" />
-            </g>
-          ))}
-          <circle cx="60" cy="60" r="16" fill="none" stroke="#B8860B" strokeWidth="1.5" />
-          <circle cx="60" cy="60" r="6" fill="#B8860B" />
-        </svg>
-      </div>
+        {/* Soft orange light behind the glass — this is what makes the blur read as "liquid" */}
+        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full bg-[#F25500]/15 blur-[110px] pointer-events-none" />
+        <div className="absolute top-1/3 -right-24 w-[380px] h-[380px] rounded-full bg-[#FF8A3D]/15 blur-[110px] pointer-events-none" />
+        <div className="absolute -bottom-24 left-1/3 w-[420px] h-[260px] rounded-full bg-[#FFE090]/20 blur-[100px] pointer-events-none" />
 
-      {/* Mandala bottom-left */}
-      <div className="absolute -bottom-10 -left-10 opacity-[0.05] pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-40 h-40 animate-[spin_120s_linear_infinite_reverse]">
-          {[0,45,90,135].map((d, i) => (
-            <g key={i} transform={`rotate(${d} 50 50)`}>
-              <ellipse cx="50" cy="10" rx="4" ry="11" fill="#C8780A" />
-            </g>
-          ))}
-          <circle cx="50" cy="50" r="12" fill="none" stroke="#C8780A" strokeWidth="1" />
-        </svg>
-      </div>
+        <div className="relative z-10 max-w-[1300px] mx-auto px-5 md:px-8 pt-14 pb-8">
 
-      {/* Warm glow */}
-      <div className="absolute bottom-0 right-1/4 w-80 h-40
-        bg-[#FFE090]/10 blur-[80px] rounded-full pointer-events-none" />
+          {/* ── MAIN GLASS PANEL ── */}
+          <div className={`${glass} rounded-[32px] p-6 md:p-10`}>
 
-      {/* ── MAIN GRID ── */}
-      <div className="relative z-10 max-w-[1300px] mx-auto px-6 py-14
-        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* Brand + CTA row */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-8 mb-8 border-b border-[#232323]/10">
+              <div className="flex flex-col gap-2">
+                <img
+                  src={LOGO_SRC}
+                  alt="Vaani 360 Media"
+                  className="h-12 md:h-14 w-auto object-contain self-start"
+                  onError={(e) => (e.currentTarget.style.display = "none")}
+                />
+                <p className="text-[15px] text-[#232323]/60 max-w-md leading-relaxed">
+                  Website development, creative media and digital growth for temples, trusts and spiritual leaders.
+                </p>
+              </div>
 
-        {/* ── COL 1: Quick Links ── */}
-        <div>
-          <FooterHeading>Quick Links</FooterHeading>
-          <OmDivider />
-
-          <div className="flex flex-col gap-3">
-            {quickLinks.map((item) => (
-              <Link
-                key={item.title}
-                to={item.to}
-                className="flex items-center gap-3 bg-[#FFFBF0] border border-[#E8C878]/70
-                  rounded-xl p-3.5 group
-                  hover:border-[#B8860B] hover:-translate-y-0.5
-                  hover:shadow-[0_6px_20px_rgba(184,134,11,0.15)]
-                  transition-all duration-200 cursor-pointer"
-              >
-                {/* Icon box */}
-                <div className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center
-                  text-xl bg-gradient-to-br from-[#C8780A] to-[#B8860B]
-                  shadow-[0_3px_10px_rgba(200,120,10,0.25)]
-                  group-hover:shadow-[0_5px_16px_rgba(200,120,10,0.4)]
-                  transition-shadow duration-200">
-                  {item.icon}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <p className="font-bold text-[13px] text-[#1A1008]
-                    [font-family:'Cinzel',serif] tracking-wide leading-tight">
-                    {item.title}
-                  </p>
-                  <p className="text-[12px] md:text-[13px] text-[#9E7840] mt-0.5 italic
-                    [font-family:'Cormorant_Garamond',serif]">
-                    {item.sub}
-                  </p>
-                </div>
-
-                {/* Arrow */}
-                <span className="text-[#E8C878] text-xs group-hover:text-[#B8860B]
-                  transition-colors duration-200 flex-shrink-0">
-                  ↗
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* ── COL 2: Features ── */}
-        <div>
-          <FooterHeading>Features</FooterHeading>
-          <OmDivider />
-
-          <ul className="space-y-2.5">
-            {features.map((f) => (
-              <FooterLink key={f}>{f}</FooterLink>
-            ))}
-          </ul>
-        </div>
-
-        {/* ── COL 3: Resources + Legal ── */}
-        <div className="flex flex-col gap-8">
-          <div>
-            <FooterHeading>Resources</FooterHeading>
-            <OmDivider />
-            <ul className="space-y-2.5">
-              {resources.map((r) => (
-                <FooterLink key={r.title} to={r.to}>{r.title}</FooterLink>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <FooterHeading>Legal</FooterHeading>
-            <OmDivider />
-            <ul className="space-y-2.5">
-              {legal.map((l) => (
-                <FooterLink key={l.title} onClick={() => setLegalModal(l)}>
-                  {l.title}
-                </FooterLink>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* ── COL 4: CTA ── */}
-        <div className="flex flex-col gap-6">
-
-          {/* Buttons */}
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={() => setDemoOpen(true)}
-              className="w-full border-2 border-[#B8860B] bg-transparent
-              text-[#B8860B] font-extrabold text-base py-3.5 rounded-xl
-              [font-family:'Cinzel',serif] tracking-wider
-              hover:bg-[#FBF3DC] hover:shadow-[0_4px_16px_rgba(184,134,11,0.2)]
-              hover:-translate-y-0.5 transition-all duration-200">
-              ✦ Book Demo
-            </button>
-
-            {/* <button className="w-full bg-gradient-to-r from-[#C8780A] to-[#B8860B]
-              text-[#FFF8E8] font-extrabold text-base py-3.5 rounded-xl
-              [font-family:'Cinzel',serif] tracking-wider
-              hover:shadow-[0_8px_24px_rgba(200,120,10,0.45)]
-              hover:-translate-y-0.5 transition-all duration-200">
-              🪷 Sign Up
-            </button> */}
-          </div>
-        </div>
-
-      </div>
-
-      {/* ── SOCIAL MEDIA + CONTACT ── */}
-      <div className="relative z-10 border-t border-[#E8C878]/30">
-        <div className="max-w-[1300px] mx-auto px-6 py-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-
-            <div className="flex flex-col items-center lg:items-start gap-3">
-              <p className="text-sm md:text-base font-extrabold text-[#7B1D1D]">
-                Follow Elevion Media
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
-                <a
-                  href="https://www.instagram.com/elevionmedia_official/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Elevion Media on Instagram"
-                  title="Instagram"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#FBF3DC] border border-[#E8C878] text-[#B8860B] hover:bg-[#B8860B] hover:text-white hover:-translate-y-1 transition-all duration-200"
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDemoOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5
+                    text-[15px] font-semibold text-white
+                    bg-gradient-to-b from-[#FF6A1A] to-[#F25500]
+                    shadow-[0_10px_28px_-8px_rgba(242,85,0,0.65),inset_0_1px_0_rgba(255,255,255,0.45)]
+                    hover:shadow-[0_14px_34px_-8px_rgba(242,85,0,0.8),inset_0_1px_0_rgba(255,255,255,0.55)]
+                    hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F25500] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FDFAF3]"
                 >
-                  <Instagram size={19} strokeWidth={2} />
-                </a>
+                  Book a demo
+                </button>
 
                 <a
-                  href="https://www.facebook.com/share/1ENJXwKWgw/"
+                  href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Elevion Media on Facebook"
-                  title="Facebook"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#FBF3DC] border border-[#E8C878] text-[#B8860B] hover:bg-[#B8860B] hover:text-white hover:-translate-y-1 transition-all duration-200"
+                  aria-label="Message us on WhatsApp"
+                  className={`${glass} ${glassHover} inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5
+                    text-[15px] font-semibold text-[#232323]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F25500]`}
                 >
-                  <Facebook size={19} strokeWidth={2} />
-                </a>
-
-                <a
-                  href="https://youtube.com/@elevion_media?si=267XgeHoxfzbNaNm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Elevion Media on YouTube"
-                  title="YouTube"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#FBF3DC] border border-[#E8C878] text-[#B8860B] hover:bg-[#B8860B] hover:text-white hover:-translate-y-1 transition-all duration-200"
-                >
-                  <Youtube size={19} strokeWidth={2} />
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/company/elevion-media/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Elevion Media on LinkedIn"
-                  title="LinkedIn"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#FBF3DC] border border-[#E8C878] text-[#B8860B] hover:bg-[#B8860B] hover:text-white hover:-translate-y-1 transition-all duration-200"
-                >
-                  <Linkedin size={19} strokeWidth={2} />
+                  <span aria-hidden="true">💬</span>
+                  Message on WhatsApp
                 </a>
               </div>
             </div>
 
-            <a
-              href="tel:8287686509"
-              className="flex items-center gap-3 rounded-2xl border border-[#E8C878] bg-[#FBF3DC] px-5 py-3 text-[#7B1D1D] hover:border-[#B8860B] hover:-translate-y-0.5 transition-all duration-200"
-              aria-label="Call Elevion Media"
-              title="Call Elevion Media"
-            >
-              <div className="w-10 h-10 rounded-xl bg-white border border-[#E8C878] flex items-center justify-center text-[#B8860B]">
-                <Phone size={18} strokeWidth={2} />
+            {/* Columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] gap-10 lg:gap-12">
+
+              {/* Services */}
+              <div>
+                <FooterHeading>Services</FooterHeading>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {quickLinks.map((item) => (
+                    <Link
+                      key={item.title}
+                      to={item.to}
+                      className={`${glass} ${glassHover} group flex flex-col gap-3 rounded-[22px] p-4
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F25500]`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div
+                          className="w-10 h-10 rounded-[14px] flex items-center justify-center text-lg
+                            bg-gradient-to-b from-[#FF6A1A] to-[#F25500]
+                            shadow-[0_6px_16px_-4px_rgba(242,85,0,0.55),inset_0_1px_0_rgba(255,255,255,0.5)]"
+                        >
+                          {item.icon}
+                        </div>
+                        <ArrowUpRight
+                          size={16}
+                          className="text-[#232323]/30 group-hover:text-[#F25500] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-[14px] font-semibold text-[#232323] leading-tight">{item.title}</p>
+                        <p className="text-[12.5px] text-[#232323]/55 mt-1 leading-snug">{item.sub}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
 
+              {/* What we do */}
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9E7840]">
-                  संपर्क सूत्र
-                </p>
-                <p className="text-base md:text-lg font-extrabold text-[#1A1008]">
-                  8287686509
-                </p>
+                <FooterHeading>What we do</FooterHeading>
+                <ul className="space-y-3">
+                  {features.map((f) => (
+                    <li key={f} className="flex items-center gap-2.5 text-[15px] font-medium text-[#232323]/75">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F25500]/70 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Resources + Legal */}
+              <div className="grid grid-cols-2 md:grid-cols-1 gap-8">
+                <div>
+                  <FooterHeading>Resources</FooterHeading>
+                  <ul className="space-y-3">
+                    {resources.map((r) => (
+                      <TextLink key={r.title} to={r.to}>{r.title}</TextLink>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <FooterHeading>Legal</FooterHeading>
+                  <ul className="space-y-3">
+                    {legal.map((l) => (
+                      <TextLink key={l.title} onClick={() => setLegalModal(l)}>{l.title}</TextLink>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── SOCIAL + CONTACT ── */}
+          <div className="mt-5 flex flex-col lg:flex-row items-center justify-between gap-5">
+            <div className={`${glass} rounded-full pl-6 pr-3 py-2.5 flex items-center gap-4`}>
+              <p className="text-[14px] font-semibold text-[#232323] whitespace-nowrap">Follow us</p>
+              <div className="flex items-center gap-2">
+                {socials.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Vaani 360 Media on ${label}`}
+                    title={label}
+                    className="w-10 h-10 rounded-full flex items-center justify-center
+                      bg-white/70 border border-white text-[#232323]
+                      shadow-[inset_0_1px_0_rgba(255,255,255,1),0_2px_8px_rgba(35,35,35,0.06)]
+                      hover:bg-[#F25500] hover:text-white hover:border-[#F25500] hover:-translate-y-0.5
+                      transition-all duration-200
+                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F25500]"
+                  >
+                    <Icon size={18} strokeWidth={2} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href="tel:9315284073"
+              aria-label="Call Vaani 360 Media"
+              className={`${glass} ${glassHover} rounded-full pl-2.5 pr-6 py-2.5 flex items-center gap-3
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F25500]`}
+            >
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white
+                bg-gradient-to-b from-[#FF6A1A] to-[#F25500]
+                shadow-[0_6px_16px_-4px_rgba(242,85,0,0.55),inset_0_1px_0_rgba(255,255,255,0.5)]">
+                <Phone size={17} strokeWidth={2.2} />
+              </div>
+              <div className="leading-tight">
+                <p className="text-[11px] font-medium text-[#232323]/55">संपर्क सूत्र</p>
+                <p className="text-[16px] font-bold text-[#232323] tracking-tight">9315284073</p>
               </div>
             </a>
-
-          </div>
-        </div>
-      </div>
-
-      {/* ── WHATSAPP CTA ── */}
-      <div className="relative z-10 flex justify-center px-6 pb-8">
-        <a
-          href="https://api.whatsapp.com/send/?phone=8287686509&text=Hi%21+I%E2%80%99m+interested+in+working+with+India%E2%80%99s+%231+Spiritual+Digital+Marketing+Agency.+I%E2%80%99d+like+to+know+more+about+your+services+and+growth+solutions.&type=phone_number&app_absent=0"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Send your message on WhatsApp"
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-[#B8860B] bg-gradient-to-r from-[#C8780A] to-[#B8860B] px-7 py-3 text-sm md:text-base font-extrabold text-white shadow-[0_8px_24px_rgba(200,120,10,0.28)] hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(200,120,10,0.38)] transition-all duration-200"
-        >
-          <span className="text-base md:text-lg">💬</span>
-          Send Your Message on WhatsApp
-        </a>
-      </div>
-
-      {/* ── BOTTOM BAR ── */}
-      <div className="relative z-10 border-t border-[#E8C878]/40">
-        <div className="h-px bg-gradient-to-r from-transparent via-[#E8C878]/50 to-transparent" />
-
-        <div className="max-w-[1300px] mx-auto px-6 py-5
-          flex flex-col sm:flex-row items-center justify-between gap-3">
-
-          <p className="text-[15px] md:text-base text-[#9E7840] italic
-            [font-family:'Cormorant_Garamond',serif] tracking-wide">
-            © 2026 Elevion Media. Where creativity  🪷 &amp; meets devotion.
-          </p>
-
-          <div className="flex items-center gap-2">
-            <span className="text-[#E8C878] text-[9px]">✦</span>
-            <span className="text-[12px] md:text-[13px] font-extrabold tracking-[0.2em] text-[#7B1D1D] uppercase
-              [font-family:'Cinzel',serif]">
-             जय श्री राम
-            </span>
-            <span className="text-[#E8C878] text-[9px]">✦</span>
           </div>
 
+          {/* ── BOTTOM BAR ── */}
+          <div className="mt-8 pt-5 border-t border-[#232323]/10 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <p className="text-[13px] text-[#232323]/55">
+              © 2026 Vaani 360 Media. Spiritual Media Agency. 🪷
+            </p>
+            <p className="text-[13px] font-semibold text-[#F25500]">जय श्री राम</p>
+          </div>
         </div>
-      </div>
 
-      {/* Book Demo modal — wahi component jo header mein use ho raha hai */}
-      <BookDemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
-
-      {/* Terms / Privacy / Data Protection modal */}
-      <LegalModal item={legalModal} onClose={() => setLegalModal(null)} />
-
-    </footer>
+        <BookDemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
+        <LegalModal item={legalModal} onClose={() => setLegalModal(null)} />
+      </footer>
     </>
   );
 }

@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { ChevronRight, Plus, CalendarCheck } from "lucide-react";
 import BookDemoModal from "../Layout/BookDemoModal";
+
+/**
+ * FAQSection — Liquid Glass edition
+ * Desktop: question list + answer panel. Mobile: smooth accordion.
+ * Palette: brand orange #F15A05 + charcoal on the site's existing cream background.
+ */
 
 const faqs = [
   {
-    q: "What services does Elevion Media provide?",
-    a: "Elevion Media helps devotional and spiritual brands build a strong digital presence through social media management, video editing, graphic design, website design, product photography, content creation, SEO and paid advertising.",
+    q: "What services does Vaani360 Media provide?",
+    a: "Vaani360 Media helps devotional and spiritual brands build a strong digital presence through social media management, video editing, graphic design, website design, product photography, content creation, SEO and paid advertising.",
   },
   {
     q: "Do you manage social media for spiritual brands?",
@@ -27,7 +34,7 @@ const faqs = [
     a: "Yes. We design modern, responsive websites for gurus, spiritual creators, devotional organizations and spiritual businesses with clear messaging, strong visuals and conversion-focused sections.",
   },
   {
-    q: "How do I get started with Elevion Media?",
+    q: "How do I get started with Vaani360 Media?",
     a: "Click Book Free Strategy Call and our existing booking form will open. We can understand your brand, current digital presence, goals and requirements, then suggest the right growth plan for you.",
   },
   {
@@ -36,13 +43,18 @@ const faqs = [
   },
 ];
 
-/* ── MANDALA ── */
 function Mandala({ size, opacity, reverse = false }) {
   return (
-    <svg viewBox="0 0 120 120"
-      style={{ width: size, height: size, opacity, pointerEvents: "none",
-        animation: `spin ${reverse ? "100s" : "80s"} linear infinite ${reverse ? "reverse" : ""}` }}>
-      {[0,30,60,90,120,150].map((d,i) => (
+    <svg
+      viewBox="0 0 120 120"
+      style={{
+        width: size,
+        height: size,
+        opacity,
+        animation: `lgSpin ${reverse ? "100s" : "80s"} linear infinite ${reverse ? "reverse" : ""}`,
+      }}
+    >
+      {[0, 30, 60, 90, 120, 150].map((d, i) => (
         <g key={i} transform={`rotate(${d} 60 60)`}>
           <ellipse cx="60" cy="13" rx="5" ry="13" fill="#B8860B" />
           <ellipse cx="60" cy="107" rx="5" ry="13" fill="#B8860B" />
@@ -54,345 +66,214 @@ function Mandala({ size, opacity, reverse = false }) {
   );
 }
 
-/* ── DESKTOP: side-by-side layout ── */
-function DesktopLayout({ active, setActive, onBook }) {
+function BookButton({ onClick, full = false }) {
   return (
-    <div className="hidden lg:grid lg:grid-cols-[1fr_1.1fr] gap-6 items-start">
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#FF7A21] to-[#F15A05] px-6 py-3 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_12px_28px_-10px_rgba(241,90,5,0.65)] transition-all duration-200 hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F15A05] ${
+        full ? "w-full" : ""
+      }`}
+    >
+      <CalendarCheck size={17} />
+      Book free strategy call
+    </button>
+  );
+}
 
-      {/* LEFT: FAQ watermark + list */}
-      <div className="relative bg-gradient-to-br from-[#F5EDD8] to-[#FBF3DC]
-        border border-[#E8C878]/60 rounded-3xl overflow-hidden
-        shadow-[0_8px_32px_rgba(184,134,11,0.1)]">
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#E8C878] to-transparent" />
-
-        {/* FAQ watermark */}
-        <div className="px-7 pt-6 pb-2 relative">
-          <p className="text-[110px] font-black leading-none select-none
-            text-[#E8C878]/35 [font-family:'Cinzel',serif] tracking-wide">
-            FAQ
-          </p>
-          <div className="absolute top-5 right-6 pointer-events-none opacity-[0.09]">
-            <svg viewBox="0 0 80 80" className="w-20 h-20 animate-[spin_60s_linear_infinite]">
-              {[0,45,90,135].map((d,i) => (
-                <g key={i} transform={`rotate(${d} 40 40)`}>
-                  <ellipse cx="40" cy="8" rx="4" ry="9" fill="#B8860B" />
-                </g>
-              ))}
-              <circle cx="40" cy="40" r="10" fill="none" stroke="#B8860B" strokeWidth="1" />
-              <circle cx="40" cy="40" r="4" fill="#B8860B" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Question list */}
-        <div className="px-5 pb-7 flex flex-col gap-2">
-          {faqs.map((faq, i) => {
-            const isActive = active === i;
-            return (
-              <button key={i} onClick={() => setActive(i)}
-                className={`w-full flex items-center gap-4 text-left px-4 py-4 rounded-2xl
-                  transition-all duration-200 group
-                  ${isActive
-                    ? "bg-[#FFFBF0] border border-[#B8860B] shadow-[0_4px_18px_rgba(184,134,11,0.15)]"
-                    : "bg-[#FFFBF0]/50 border border-transparent hover:border-[#E8C878]/60 hover:bg-[#FFFBF0]/80"}`}>
-                <div className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border-2 transition-all duration-200
-                  ${isActive
-                    ? "border-[#B8860B] bg-gradient-to-br from-[#C8780A] to-[#B8860B]"
-                    : "border-[#D4B060]/50 bg-white group-hover:border-[#E8C878]"}`}>
-                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                </div>
-                <span className={`text-[13.5px] flex-1 leading-snug [font-family:'Cinzel',serif] font-semibold tracking-wide transition-colors duration-200
-                  ${isActive ? "text-[#C8780A]" : "text-[#5C4020] group-hover:text-[#1A1008]"}`}>
-                  {faq.q}
-                </span>
-                <span className={`text-sm flex-shrink-0 transition-all duration-200
-                  ${isActive ? "text-[#B8860B]" : "text-[#D4B060] group-hover:text-[#B8860B]"}`}>
-                  {isActive ? "▾" : "›"}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+function DesktopLayout({ active, setActive, onBook }) {
+  const current = faqs[active] ?? faqs[0];
+  return (
+    <div className="hidden items-stretch gap-6 lg:grid lg:grid-cols-[1fr_1.05fr]">
+      {/* Questions */}
+      <div className="lg-glass relative flex flex-col gap-1.5 rounded-[32px] p-3">
+        {faqs.map((faq, i) => {
+          const isActive = active === i;
+          return (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              aria-pressed={isActive}
+              className={`relative z-10 flex w-full items-center gap-3 rounded-[22px] px-5 py-4 text-left transition-all duration-300 focus-visible:outline-2 focus-visible:outline-[#F15A05] ${
+                isActive
+                  ? "bg-white/90 shadow-[inset_0_1px_0_#fff,0_8px_24px_-10px_rgba(120,50,10,0.35)]"
+                  : "hover:bg-white/50"
+              }`}
+            >
+              <span
+                className={`h-2 w-2 shrink-0 rounded-full transition-all duration-300 ${
+                  isActive ? "scale-125 bg-[#F15A05]" : "bg-black/15"
+                }`}
+              />
+              <span
+                className={`flex-1 text-[15px] leading-snug tracking-[-0.01em] transition-colors ${
+                  isActive ? "font-semibold text-[#222]" : "font-medium text-[#222]/70"
+                }`}
+              >
+                {faq.q}
+              </span>
+              <ChevronRight
+                size={18}
+                className={`shrink-0 transition-all duration-300 ${
+                  isActive ? "translate-x-0.5 text-[#F15A05]" : "text-black/25"
+                }`}
+              />
+            </button>
+          );
+        })}
       </div>
 
-      {/* RIGHT: Answer panel */}
-      <div className="relative bg-[#FFFBF0] border border-[#E8C878]/60 rounded-3xl
-        overflow-hidden min-h-[560px] flex flex-col
-        shadow-[0_12px_48px_rgba(184,134,11,0.12)]">
-        <div className="h-[3px] bg-gradient-to-r from-[#C8780A] via-[#E8C878] to-[#B8860B]" />
-
-        <div className="absolute top-4 right-4 pointer-events-none">
-          <svg viewBox="0 0 60 60" className="w-14 h-14 opacity-[0.07] animate-[spin_90s_linear_infinite_reverse]">
-            {[0,30,60,90,120,150].map((d,i) => (
-              <g key={i} transform={`rotate(${d} 30 30)`}>
-                <ellipse cx="30" cy="6" rx="3" ry="7" fill="#B8860B" />
-              </g>
-            ))}
-            <circle cx="30" cy="30" r="8" fill="none" stroke="#B8860B" strokeWidth="1" />
-            <circle cx="30" cy="30" r="3" fill="#B8860B" />
-          </svg>
+      {/* Answer */}
+      <div className="lg-glass lg-main relative flex min-h-[560px] flex-col overflow-hidden rounded-[32px]">
+        <div className="relative z-10 flex flex-1 flex-col justify-center px-11 py-12">
+          <div key={active} className="lg-in">
+            <h3 className="text-[clamp(24px,2.4vw,32px)] font-semibold leading-[1.15] tracking-[-0.025em] text-[#222]">
+              {current.q}
+            </h3>
+            <p className="mt-6 text-[17px] leading-[1.7] text-[#222]/75">{current.a}</p>
+          </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center px-10 py-14">
-          <div className="inline-flex items-center gap-2 mb-6 self-start">
-            <div className="bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8]
-              text-[10px] font-black px-4 py-1.5 rounded-full [font-family:'Cinzel',serif]
-              tracking-[0.2em] shadow-[0_3px_10px_rgba(200,120,10,0.35)]">
-              Q {String(active + 1).padStart(2, "0")}
-            </div>
-            <div className="h-px w-12 bg-gradient-to-r from-[#E8C878] to-transparent" />
-            <span className="text-[10px] text-[#B8860B] tracking-[0.2em] [font-family:'Cinzel',serif] uppercase">Answer</span>
-          </div>
-
-          <h3 className="text-[clamp(20px,2.2vw,28px)] font-black text-[#1A1008]
-            [font-family:'Cinzel',serif] tracking-tight leading-tight mb-5">
-            {faqs[active].q}
-          </h3>
-
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-[2px] w-10 bg-gradient-to-r from-[#C8780A] to-[#E8C878] rounded-full" />
-            <span className="text-[#E8C878] text-xs">✦</span>
-          </div>
-
-          <p className="text-[16px] text-[#5C4020] leading-[1.9] [font-family:'Cormorant_Garamond',serif] font-medium">
-            {faqs[active].a}
-          </p>
-        </div>
-
-        <div className="border-t border-[#E8C878]/40 px-10 py-5
-          bg-gradient-to-r from-[#FBF3DC]/60 to-[#FFFBF0]
-          flex items-center justify-between gap-4 flex-wrap">
-          <p className="text-[12px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif]">
-            Still have questions? We're here to guide you.
-          </p>
-          <button
-            type="button"
-            onClick={onBook}
-            className="relative overflow-hidden bg-gradient-to-r from-[#C8780A] to-[#B8860B]
-            text-[#FFF8E8] font-bold text-[12px] px-6 py-2.5 rounded-full
-            [font-family:'Cinzel',serif] tracking-wider
-            hover:shadow-[0_6px_22px_rgba(200,120,10,0.45)] hover:-translate-y-0.5
-            transition-all duration-200 group flex-shrink-0"
-          >
-            <span className="relative z-10 flex items-center gap-2">🪔 Book Free Strategy Call</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent
-              translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
-          </button>
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.06] bg-white/40 px-11 py-6">
+          <p className="text-[14px] text-[#6b6259]">Still have questions? We're here to guide you.</p>
+          <BookButton onClick={onBook} />
         </div>
       </div>
     </div>
   );
 }
 
-/* ── MOBILE/TABLET: accordion — exactly like reference image ── */
 function MobileLayout({ active, setActive, onBook }) {
   return (
     <div className="lg:hidden">
-
-      {/* Outer card — reference ka light warm rounded card */}
-      <div className="relative bg-gradient-to-br from-[#F5EDD8] to-[#FBF3DC]
-        border border-[#E8C878]/60 rounded-3xl overflow-hidden
-        shadow-[0_8px_36px_rgba(184,134,11,0.13)]">
-
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#E8C878] to-transparent" />
-
-        {/* FAQ big watermark — top of card exactly like reference */}
-        <div className="relative px-6 pt-5 pb-0 overflow-hidden select-none">
-          <p className="text-[clamp(68px,21vw,104px)] font-black leading-[0.9]
-            text-[#D4A85A]/30 [font-family:'Cinzel',serif] tracking-wider">
-            FAQ
-          </p>
-          <div className="absolute top-3 right-5 pointer-events-none opacity-[0.08]">
-            <svg viewBox="0 0 70 70" className="w-14 h-14 animate-[spin_60s_linear_infinite]">
-              {[0,45,90,135].map((d,i)=>(
-                <g key={i} transform={`rotate(${d} 35 35)`}>
-                  <ellipse cx="35" cy="7" rx="3" ry="8" fill="#B8860B"/>
-                </g>
-              ))}
-              <circle cx="35" cy="35" r="9" fill="none" stroke="#B8860B" strokeWidth="1"/>
-              <circle cx="35" cy="35" r="3.5" fill="#B8860B"/>
-            </svg>
-          </div>
-        </div>
-
-        {/* ── ACCORDION LIST ── */}
-        <div className="px-3 pt-4 pb-5 flex flex-col gap-2">
-          {faqs.map((faq, i) => {
-            const isOpen = active === i;
-            return (
-              <div key={i} className="overflow-hidden rounded-2xl
-                transition-shadow duration-300"
-                style={{ boxShadow: isOpen ? "0 4px 20px rgba(184,134,11,0.18)" : "none" }}>
-
-                {/* ── QUESTION ROW ── */}
-                <button
-                  onClick={() => setActive(isOpen ? -1 : i)}
-                  className={`w-full flex items-center gap-3 px-4 py-[14px] text-left
-                    transition-all duration-200
-                    ${isOpen
-                      ? "bg-[#FFFBF0] border border-[#B8860B] rounded-t-2xl border-b-0"
-                      : "bg-[#FFFBF0]/80 border border-[#E8C878]/50 rounded-2xl hover:border-[#C8A050]/70"
-                    }`}
+      <div className="lg-glass relative flex flex-col gap-2 rounded-[28px] p-2.5">
+        {faqs.map((faq, i) => {
+          const isOpen = active === i;
+          return (
+            <div
+              key={i}
+              className={`relative z-10 overflow-hidden rounded-[20px] transition-all duration-300 ${
+                isOpen
+                  ? "bg-white/90 shadow-[inset_0_1px_0_#fff,0_8px_24px_-10px_rgba(120,50,10,0.35)]"
+                  : "bg-white/40"
+              }`}
+            >
+              <button
+                onClick={() => setActive(isOpen ? -1 : i)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center gap-3 px-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-[#F15A05]"
+              >
+                <span
+                  className={`flex-1 text-[15px] leading-snug tracking-[-0.01em] ${
+                    isOpen ? "font-semibold text-[#222]" : "font-medium text-[#222]/80"
+                  }`}
                 >
-                  {/* Radio dot — filled saffron when open, grey ring when closed */}
-                  <div className={`w-[22px] h-[22px] rounded-full flex-shrink-0
-                    flex items-center justify-center border-2 transition-all duration-200
-                    ${isOpen
-                      ? "border-[#B8860B] bg-gradient-to-br from-[#C8780A] to-[#B8860B] shadow-[0_2px_8px_rgba(200,120,10,0.45)]"
-                      : "border-[#C8A878]/50 bg-[#F5EDD8]"
-                    }`}>
-                    {isOpen && <div className="w-[7px] h-[7px] rounded-full bg-white" />}
-                  </div>
+                  {faq.q}
+                </span>
+                <span
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+                    isOpen ? "rotate-45 bg-[#F15A05] text-white" : "bg-black/[0.06] text-[#222]"
+                  }`}
+                >
+                  <Plus size={16} strokeWidth={2.5} />
+                </span>
+              </button>
 
-                  {/* Question text */}
-                  <span className={`flex-1 text-[13px] leading-snug font-bold
-                    [font-family:'Cinzel',serif] tracking-wide transition-colors duration-200
-                    ${isOpen ? "text-[#C8780A]" : "text-[#5C4020]"}`}>
-                    {faq.q}
-                  </span>
-
-                  {/* Arrow — ▾ when open, › when closed  */}
-                  <span className={`flex-shrink-0 font-bold transition-all duration-300 text-[18px]
-                    ${isOpen ? "text-[#B8860B]" : "text-[#C8A878]"}`}>
-                    {isOpen ? "▾" : "›"}
-                  </span>
-                </button>
-
-                {/* ── ANSWER PANEL — expands below question row ── */}
-                {isOpen && (
-                  <div className="bg-[#FFFBF0] border border-[#B8860B] border-t-0
-                    rounded-b-2xl px-5 pt-3 pb-5">
-                    {/* Gold divider */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="h-[1.5px] w-8 bg-gradient-to-r from-[#C8780A] to-[#E8C878] rounded-full" />
-                      <span className="text-[#E8C878] text-[10px]">✦</span>
-                    </div>
-                    <p className="text-[14.5px] text-[#5C4020] leading-[1.85]
-                      [font-family:'Cormorant_Garamond',serif] font-medium">
-                      {faq.a}
-                    </p>
-                  </div>
-                )}
-
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <p className="px-4 pb-5 pr-6 text-[15px] leading-[1.7] text-[#222]/75">{faq.a}</p>
+                </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
 
-        {/* ── BOTTOM CTA ── */}
-        <div className="mx-3 mb-5 p-4 rounded-2xl bg-[#FFFBF0]
-          border border-[#E8C878]/60
-          flex flex-col gap-3">
-          <p className="text-[12px] text-[#9E7840] italic
-            [font-family:'Cormorant_Garamond',serif]">
-            Still have questions? We're here to guide you.
-          </p>
-          <button
-            type="button"
-            onClick={onBook}
-            className="w-full bg-gradient-to-r from-[#C8780A] to-[#B8860B]
-            text-[#FFF8E8] font-bold text-[13px] py-3 rounded-xl
-            [font-family:'Cinzel',serif] tracking-wider text-center
-            active:scale-95 transition-all duration-200
-            shadow-[0_4px_16px_rgba(200,120,10,0.35)]"
-          >
-            🪔 Book Free Strategy Call
-          </button>
+        <div className="relative z-10 mt-1 flex flex-col gap-3 rounded-[20px] bg-white/60 p-4">
+          <p className="text-[14px] text-[#6b6259]">Still have questions? We're here to guide you.</p>
+          <BookButton onClick={onBook} full />
         </div>
-
       </div>
     </div>
   );
 }
 
-/* ── MAIN EXPORT ── */
 export default function FAQSection() {
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <section
-      className="relative bg-[#FDFAF3] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-    >
+    <section className="lg-section relative w-full overflow-hidden bg-[#FDFAF3] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        .lg-section { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+        .lg-glass {
+          background: linear-gradient(145deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.35) 55%, rgba(255,255,255,0.5) 100%);
+          -webkit-backdrop-filter: blur(30px) saturate(190%);
+          backdrop-filter: blur(30px) saturate(190%);
+          border: 1px solid rgba(255,255,255,0.8);
+          box-shadow:
+            inset 0 1.5px 0 rgba(255,255,255,0.95),
+            inset 0 -1px 0 rgba(255,255,255,0.35),
+            inset 1px 0 0 rgba(255,255,255,0.4),
+            0 1px 2px rgba(60,40,10,0.06),
+            0 24px 48px -16px rgba(120,50,10,0.22);
+        }
+        .lg-glass::before {
+          content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+          background:
+            radial-gradient(120% 70% at 12% -10%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 55%),
+            linear-gradient(115deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 60%);
+          mix-blend-mode: soft-light;
+        }
+        .lg-main { box-shadow:
+            inset 0 1.5px 0 #fff,
+            inset 0 -1px 0 rgba(255,255,255,0.4),
+            0 2px 4px rgba(60,40,10,0.05),
+            0 40px 80px -24px rgba(120,50,10,0.32); }
+        .lg-in { animation: lgIn .55s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes lgSpin { to { transform: rotate(360deg); } }
+        @keyframes lgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        .lg-orb { position: absolute; border-radius: 9999px; filter: blur(70px); pointer-events: none; }
+        @media (prefers-reduced-motion: reduce) { .lg-in { animation: none; } .lg-section svg { animation: none !important; } }
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+          .lg-glass { background: rgba(255,255,255,0.88); }
+        }
       `}</style>
 
-      {/* Dot pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.2]"
+      {/* Original site background: dot pattern, corner mandalas, glow orbs */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.2]"
         style={{
           backgroundImage: "radial-gradient(circle, #C8A050 1px, transparent 1px)",
           backgroundSize: "28px 28px",
-        }} />
-
-      {/* Corner mandalas */}
-      <div className="absolute -top-12 -left-12 pointer-events-none">
+        }}
+      />
+      <div className="pointer-events-none absolute -left-12 -top-12">
         <Mandala size={200} opacity={0.07} />
       </div>
-      <div className="absolute -bottom-12 -right-12 pointer-events-none">
+      <div className="pointer-events-none absolute -bottom-12 -right-12">
         <Mandala size={170} opacity={0.06} reverse />
       </div>
+      <div className="pointer-events-none absolute right-0 top-0 h-[260px] w-[400px] rounded-full bg-[#FFE090]/[0.14] blur-[100px]" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-[220px] w-[340px] rounded-full bg-[#F5C07A]/10 blur-[90px]" />
 
-      {/* Glow orbs */}
-      <div className="absolute top-0 right-0 w-[400px] h-[260px] bg-[#FFE090]/14 blur-[100px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[340px] h-[220px] bg-[#F5C07A]/10 blur-[90px] rounded-full pointer-events-none" />
-
-      <div className="relative z-10 max-w-[1260px] mx-auto">
-
-        {/* ── HEADING ── */}
-        <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-3 bg-[#FBF3DC] border border-[#E8C878]
-            rounded-full px-5 py-2 mb-5">
-            <span className="text-sm">🪷</span>
-            <span className="text-[10px] font-bold tracking-[0.4em] text-[#B8860B] uppercase
-              [font-family:'Cinzel',serif]">Sacred Knowledge</span>
-            <span className="text-sm">🪷</span>
-          </div>
-
-          <h2 className="text-[clamp(26px,4.5vw,52px)] font-black text-[#1A1008]
-            [font-family:'Cinzel',serif] tracking-tight leading-tight mb-4">
-            Frequently Asked{" "}
-            <span className="italic text-[#B8860B] [font-family:'Cormorant_Garamond',serif]">
-              Questions
-            </span>
+      <div className="relative z-10 mx-auto max-w-[1180px]">
+        <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center text-center sm:mb-16">
+          <h2 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#222] sm:text-[52px]">
+            Frequently asked questions
           </h2>
-
-          <div className="flex items-center gap-3 justify-center mb-3">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#E8C878]" />
-            <span className="text-[#B8860B] text-base font-serif">ॐ</span>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#E8C878]" />
-          </div>
-
-          <p className="text-[11px] sm:text-[13px] font-semibold tracking-[0.25em] text-[#C8780A] uppercase
-            [font-family:'Cinzel',serif]">
-            ✦ Clarity on your Digital Journey ✦
+          <p className="mt-4 max-w-md text-[16px] leading-relaxed text-[#6b6259] sm:text-[18px]">
+            Clear answers on how we help your spiritual brand grow online.
           </p>
         </div>
 
-        {/* Layouts — mobile accordion / desktop side-by-side */}
         <MobileLayout active={active} setActive={setActive} onBook={() => setDemoOpen(true)} />
         <DesktopLayout active={active} setActive={setActive} onBook={() => setDemoOpen(true)} />
 
-        {/* ── BOOKING MODAL ── */}
-        <BookDemoModal
-          isOpen={demoOpen}
-          onClose={() => setDemoOpen(false)}
-        />
-
-        {/* ── MANTRA ── */}
-        <div className="mt-10 sm:mt-12 flex items-center justify-center gap-3">
-          <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#E8C878]" />
-          <div className="flex items-center gap-2 bg-[#FBF3DC] border border-[#E8C878]/70
-            rounded-full px-4 py-1.5">
-            <span className="text-sm">🕉️</span>
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#7B1D1D] uppercase
-              [font-family:'Cinzel',serif]">ज्ञानं परमं ध्येयम्</span>
-            <span className="text-sm">🕉️</span>
-          </div>
-          <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#E8C878]" />
-        </div>
-
+        <BookDemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
       </div>
     </section>
   );

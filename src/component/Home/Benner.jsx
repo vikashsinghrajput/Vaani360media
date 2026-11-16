@@ -268,7 +268,7 @@ export default function SpiritualBanner() {
             <div className="sb-item d3 sb-cta-wrap">
               <a
                 className="sb-cta"
-                href="https://api.whatsapp.com/send/?phone=8287686509&text=Hi%21+I%E2%80%99m+interested+in+working+with+India%E2%80%99s+%231+Spiritual+Digital+Marketing+Agency.+I%E2%80%99d+like+to+know+more+about+your+services+and+growth+solutions.&type=phone_number&app_absent=0"
+                href="https://api.whatsapp.com/send/?phone=9319284073&text=Hi%21+I%E2%80%99m+interested+in+working+with+India%E2%80%99s+%231+Spiritual+Digital+Marketing+Agency.+I%E2%80%99d+like+to+know+more+about+your+services+and+growth+solutions.&type=phone_number&app_absent=0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Book your free strategy call on WhatsApp"

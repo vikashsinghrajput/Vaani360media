@@ -5,7 +5,7 @@ import VideoEditing from "../../assets/WorkImage/VideoEditing.png";
 import WebsiteDesign from "../../assets/WorkImage/Website Design.png";
 
 /* =========================================================
-   ELEVION MEDIA — WHAT WE DO · PINNED HORIZONTAL SCROLL
+   VAANI 360 MEDIA — WHAT WE DO · PINNED HORIZONTAL SCROLL
    Liquid-glass redesign. Scroll/pin logic is unchanged:
    section pins with position:fixed (never sticky), so it keeps
    working even if an ancestor has overflow-x:hidden.
@@ -18,38 +18,46 @@ const HOLD_DISTANCE = 600;
 const MOBILE_BREAKPOINT = 768;
 
 const WHATSAPP_URL =
-  "https://api.whatsapp.com/send/?phone=8287686509&text=Hi%21+I%E2%80%99m+interested+in+working+with+India%E2%80%99s+%231+Spiritual+Digital+Marketing+Agency.";
+  "https://wa.me/919315284073?text=Hi%2C%20mujhe%20website%20development%20aur%20design%20ke%20baare%20mein%20baat%20karni%20hai.";
 
 const cards = [
   {
     id: 1,
+    title: "Website Development",
+    desc: "Fast, responsive and purpose-built websites for temples, trusts, ashrams and spiritual leaders — with clear structure, useful features and a seamless experience on every device.",
+    badge: "Primary Service",
+    image: WebsiteDesign,
+    imageAlt: "Website development for temples and spiritual organisations",
+    link: "/services/web-development",
+  },
+  {
+    id: 2,
+    title: "Website Design & UI/UX",
+    desc: "Professional, user-friendly website designs that present your temple, trust or spiritual organisation with clarity, credibility and a strong digital identity.",
+    badge: "Design & Experience",
+    image: WebsiteDesign,
+    imageAlt: "Website design and user experience",
+  },
+  {
+    id: 3,
+    title: "Video Editing & Graphic Design",
+    desc: "Devotional reels, shorts, YouTube videos, posters, thumbnails and festival creatives designed to communicate your message with consistency.",
+    badge: "Creative Services",
+    image: VideoEditing,
+    imageAlt: "Video editing and graphic design for spiritual content",
+  },
+  {
+    id: 4,
     title: "Social Media Management",
-    desc: "Complete social media management for devotional brands with content planning, posts, reels, captions, community handling and growth strategy.",
-    badge: "Content Planned",
+    desc: "Content planning, post and reel publishing, captions and account management to help temples, trusts and spiritual leaders build a consistent online presence.",
+    badge: "Digital Presence",
     image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85",
     imageAlt: "Social media content planning",
   },
   {
-    id: 2,
-    title: "Video Editing & Graphic Design",
-    desc: "Devotional reels, shorts, YouTube videos, posters, thumbnails, festival creatives and branded social media visuals — all handled under one creative service.",
-    badge: "Creative Ready",
-    image: VideoEditing,
-    imageAlt: "Devotional video editing and graphic design",
-  },
-  {
-    id: 3,
-    title: "Website / Web Dev",
-    desc: "Modern, responsive websites for mandirs, gurus, spiritual organizations, events, bookings and devotional brands.",
-    badge: "Website Ready",
-    image: WebsiteDesign,
-    imageAlt: "Spiritual website design",
-    link: "/services/web-development",
-  },
-  {
-    id: 4,
-    title: "Try Now For Free",
-    desc: "Start a conversation with Elevion Media on WhatsApp and discuss your devotional or spiritual digital growth requirements.",
+    id: 5,
+    title: "Let’s Build Your Digital Presence",
+    desc: "Have a project in mind? Message us on WhatsApp to get started.",
     badge: "Free Consultation",
     cta: true,
   },
@@ -181,7 +189,7 @@ const STYLES = `
 @media (prefers-reduced-transparency: reduce) { .es-glass, .es-media .glassbadge { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255,255,255,.93); } }
 `;
 
-const ElevionMediaScroll = () => {
+const Vaani360MediaScroll = () => {
   const containerRef = useRef(null);
   const introRef = useRef(null);
   const trackRef = useRef(null);
@@ -367,7 +375,7 @@ const ElevionMediaScroll = () => {
       ref={containerRef}
       style={{ height: `${Math.max(containerHeight, 1)}px` }}
       className="es-sec"
-      aria-label="What is Elevion Media"
+      aria-label="What is Vaani 360 Media"
     >
       <style>{STYLES}</style>
 
@@ -385,14 +393,14 @@ const ElevionMediaScroll = () => {
             opacity: Math.max(0, 1 - scrollProgress * 2.2),
           }}
         >
-          <div className="es-chip es-glass">ELEVION MEDIA</div>
+          <div className="es-chip es-glass">VAANI 360 MEDIA</div>
           <h2>
             <span className="l1">What is</span>
-            <span className="l2">Elevion Media?</span>
+            <span className="l2">Vaani 360 Media?</span>
           </h2>
-          <div className="es-tag"><i /> Devotional Digital Growth</div>
+          <div className="es-tag"><i /> Spiritual Media Agency</div>
           <p>
-            We help gurus, mandirs, spiritual creators and devotional brands grow online through content, design, social media, SEO, paid ads and digital marketing.
+            We build professional websites and digital experiences for temples, trusts and spiritual leaders. We also support your online presence with creative content, video editing, graphic design and social media management.
           </p>
         </div>
 
@@ -429,7 +437,7 @@ const ElevionMediaScroll = () => {
                     ) : (
                       <div className="es-wa">
                         <div className="ic"><MessageCircle size={26} strokeWidth={2.1} /></div>
-                        <small>Elevion Media</small>
+                        <small>Vaani 360 Media</small>
                         <b>WhatsApp</b>
                       </div>
                     )}
@@ -437,14 +445,14 @@ const ElevionMediaScroll = () => {
                 </div>
 
                 <div className="es-body">
-                  <div className="es-eyebrow">Spiritual Digital Growth</div>
+                  <div className="es-eyebrow">Vaani 360 Media Services</div>
                   <h3>{card.title}</h3>
                   <p>{card.desc}</p>
 
                   {card.cta && (
                     <button type="button" className="es-btn">
                       <MessageCircle size={17} strokeWidth={2.2} />
-                      Try Now For Free
+                      Message on WhatsApp
                     </button>
                   )}
                 </div>
@@ -462,4 +470,4 @@ const ElevionMediaScroll = () => {
   );
 };
 
-export default ElevionMediaScroll;
+export default Vaani360MediaScroll;

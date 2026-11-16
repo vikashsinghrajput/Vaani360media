@@ -148,6 +148,14 @@ const STYLES = `
 .lg-blob.c { width: 300px; height: 300px; background: #E7C968; opacity: .35; bottom: -60px; left: 38%; animation: lgDrift 30s ease-in-out infinite alternate; }
 @keyframes lgDrift { to { transform: translate3d(60px,-40px,0) scale(1.12); } }
 
+/* dotted grid background */
+.lg-dotbg {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(190,120,55,.42) 1.1px, transparent 1.5px);
+  background-size: 34px 34px;
+  background-position: 14px 8px;
+}
+
 /* the glass surface */
 .lg-glass {
   position: relative;
@@ -354,6 +362,10 @@ const loadYT = () => {
   return ytReady;
 };
 
+/* Start downloading the YouTube API as soon as this file loads,
+   so it is already ready by the time the first card appears. */
+if (typeof window !== "undefined") loadYT();
+
 /* Phones only allow autoplay after a touch in some modes (e.g. iOS Low Power).
    On the first touch/click anywhere we simply tell every preview to play. */
 const players = new Set();
@@ -372,11 +384,12 @@ const bindGesture = () => {
 };
 
 function LiveFrame({ id, delay = 0 }) {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(delay === 0);
   const [playing, setPlaying] = useState(false);
   const frame = useRef(null);
 
   useEffect(() => {
+    if (delay === 0) { setMounted(true); return; }
     const t = setTimeout(() => setMounted(true), delay);
     return () => clearTimeout(t);
   }, [delay]);
@@ -519,7 +532,8 @@ export default function VideoEditingShowcase() {
   const [dir, setDir] = useState("fwd");
 
   const [canScroll, setCanScroll] = useState(false);
-  const [visible, setVisible] = useState(() => new Set(videos.map((_, i) => i)));
+  // start with only the first card, so the phone is not loading 7 players at once
+  const [visible, setVisible] = useState(() => new Set([0]));
   const [sectionInView, setSectionInView] = useState(false);
   const track = useRef(null);
   const drag = useRef({ down: false, moved: false, startX: 0, startLeft: 0 });
@@ -541,6 +555,19 @@ export default function VideoEditingShowcase() {
       "360 provides professional devotional and spiritual video editing, Baba Ji video editing, devotional reels, YouTube content and social media management for spiritual brands and creators."
     );
     setMeta("keywords", SEO_KEYWORDS.join(", "));
+  }, []);
+
+  /* warm up the connections to YouTube so the first video starts sooner */
+  useEffect(() => {
+    const hosts = ["https://www.youtube.com", "https://i.ytimg.com", "https://s.ytimg.com"];
+    const added = hosts.map((href) => {
+      const l = document.createElement("link");
+      l.rel = "preconnect";
+      l.href = href;
+      document.head.appendChild(l);
+      return l;
+    });
+    return () => added.forEach((l) => l.remove());
   }, []);
 
   const total = videos.length;
@@ -652,6 +679,7 @@ export default function VideoEditingShowcase() {
   };
 
   const active = videos[activeIndex];
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <>
@@ -673,6 +701,7 @@ export default function VideoEditingShowcase() {
         <div className="lg-blob a" />
         <div className="lg-blob b" />
         <div className="lg-blob c" />
+        <div className="lg-dotbg" aria-hidden="true" />
 
         {/* HERO */}
         <section className="lg-hero">
@@ -705,7 +734,11 @@ export default function VideoEditingShowcase() {
               >
                 <img className="thumb" src={v.thumb} alt={v.title} draggable={false} />
                 {modalIndex === null && sectionInView && visible.has(i) && (
-                  <LiveFrame id={v.youtubeId} delay={window.innerWidth < 768 ? 0 : (i % 4) * 250} />
+                  <LiveFrame
+                    id={v.youtubeId}
+                    /* phone: the card in the centre starts instantly, the others wait a moment */
+                    delay={isMobile ? (i === activeIndex ? 0 : 700) : (i % 4) * 250}
+                  />
                 )}
                 <button
                   className="lg-full"
