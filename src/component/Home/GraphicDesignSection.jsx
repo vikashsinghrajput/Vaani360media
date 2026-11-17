@@ -337,9 +337,16 @@ const STYLES = `
   .gd-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .gd-side { position: static; padding: 10px; border-radius: 28px; }
   .gd-side h3 { display: none; }
-  /* wrap: every category visible, nothing cut off or hidden behind a scroll */
-  .gd-cats { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
-  .gd-cat { width: auto; flex: 0 1 auto; max-width: 100%; padding: 6px 14px 6px 6px; border-radius: 999px; min-height: 44px; }
+  /* one swipeable row of pills (same as the live site); edge padding + snap so no pill is ever cut at rest */
+  .gd-cats {
+    flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; gap: 8px;
+    overflow-x: auto; padding: 2px 14px; scrollbar-width: none; scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+  }
+  .gd-cats::-webkit-scrollbar { display: none; }
+  .gd-cat { width: auto; flex: none; scroll-snap-align: center; padding: 6px 14px 6px 6px; border-radius: 999px; min-height: 44px; }
   .gd-tile { width: 32px; height: 32px; border-radius: 50%; }
   .gd-cat .nm { white-space: nowrap; flex: none; }
   .gd-cat .ct { display: none; }
@@ -366,8 +373,8 @@ const STYLES = `
   .gd-cat .nm { font-size: 12.5px; }
   .gd-tile { width: 30px; height: 30px; }
 
-  /* swipe + tap on image works, so hide the big text button that covered the poster */
-  .gd-btn { display: none; }
+  /* full-view button stays (like the live site), just compact so it covers less of the poster */
+  .gd-btn { bottom: 10px; padding: 9px 15px; font-size: 12px; gap: 6px; }
   .gd-view { cursor: pointer; }
 
   /* small, easy-to-hit arrows on the edges */
@@ -553,9 +560,10 @@ const CarStudio = () => {
                   <button
                     key={key}
                     className={`gd-cat ${selectedCar === key ? "on" : ""}`}
-                    onClick={() => {
+                    onClick={(e) => {
                       setSelectedCar(key);
                       setActiveImage(0);
+                      e.currentTarget.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
                     }}
                     aria-pressed={selectedCar === key}
                     aria-label={`Show ${categoryLabels[key]} designs`}

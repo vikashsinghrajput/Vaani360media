@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss(),
   ],
 
-  base: '/Vaani360media/',
+  base: '/',
 
   theme: {
     extend: {
