@@ -18,9 +18,9 @@ const SLIDE_INTERVAL_MS = 1100; // autoplay speed
 const SLIDE_TRANSITION_MS = 450; // slide animation
 
 const SOCIALS = [
-  { label: "Instagram", href: "https://www.instagram.com/elevionmedia_official/", Icon: Instagram },
-  { label: "Facebook", href: "https://www.facebook.com/share/1ENJXwKWgw/", Icon: Facebook },
-  { label: "YouTube", href: "https://youtube.com/@elevion_media?si=267XgeHoxfzbNaNm", Icon: Youtube },
+  { label: "Instagram", href: "https://www.instagram.com/vaani360media/", Icon: Instagram },
+  { label: "Facebook", href: "https://www.facebook.com/share/1FEg5U9GaP/", Icon: Facebook },
+  { label: "YouTube", href: "https://www.youtube.com/@Vaani360media", Icon: Youtube },
 ];
 
 const WHATSAPP_URL =
