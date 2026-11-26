@@ -243,7 +243,7 @@ export default function HeroSection() {
                 text-[#F25400]
               "
             >
-              DEVOTIONAL & SPIRITUAL MEDIA
+              SPIRITUAL MEDIA AGENCY
             </span>
 
             <h1
@@ -332,10 +332,11 @@ export default function HeroSection() {
               "
             >
               <p className="text-base font-extrabold text-[#232323]">
-                Elevion Media
+             Vaani 360 Media
               </p>
               <p className="mt-1 text-[11px] font-bold tracking-wide text-[#F25400]">
-                Let's Elevate Your Brand
+              Your Spiritual Brand. 
+              Our Digital Vision
               </p>
             </div>
 

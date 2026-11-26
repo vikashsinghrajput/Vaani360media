@@ -4,7 +4,6 @@ import { X, ChevronLeft, ChevronRight, Clock, Calendar, User, ChevronDown } from
 
 // ─────────────────────────────────────────────────────────
 //  🔧 EMAILJS CONFIG — Yahan apni EmailJS details daalo
-//     Step-by-step guide neeche comment mein hai
 // ─────────────────────────────────────────────────────────
 const EMAILJS_SERVICE_ID = "service_efgqrfq";
 const EMAILJS_TEMPLATE_ID = "template_uxwycqq";
@@ -32,6 +31,169 @@ const getFirstDayOfMonth = (year, month) => {
 const EVENING_SLOTS = ["04:30 pm","05:00 pm","05:30 pm","06:00 pm","06:30 pm","07:00 pm","07:30 pm"];
 const NIGHT_SLOTS   = ["08:00 pm","08:30 pm","09:00 pm","09:30 pm","10:00 pm","10:30 pm","11:00 pm","11:30 pm"];
 
+/* =========================================================
+   STYLES — liquid glass, same gold / saffron palette as before
+   ========================================================= */
+
+const STYLES = `
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap');
+
+.bd-layer {
+  --ink: #1A1008; --ink-2: #5C4020; --ink-3: #9E7840;
+  --gold-1: #C8780A; --gold-2: #B8860B; --line: #E8C878; --cream: #FDFAF3; --cream-2: #FBF3DC;
+  --edge: rgba(255,255,255,.78);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased; color: var(--ink);
+  position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 12px;
+}
+.bd-layer *, .bd-layer *::before, .bd-layer *::after { box-sizing: border-box; }
+.bd-layer button, .bd-layer input { font-family: inherit; }
+
+.bd-backdrop {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(640px 460px at 18% 22%, rgba(242,140,40,.62), transparent 62%),
+    radial-gradient(620px 460px at 86% 82%, rgba(226,92,112,.42), transparent 62%),
+    radial-gradient(520px 420px at 74% 14%, rgba(232,184,64,.5), transparent 62%),
+    rgba(32,14,0,.5);
+  -webkit-backdrop-filter: blur(24px) saturate(170%); backdrop-filter: blur(24px) saturate(170%); animation: bdFade .25s ease;
+}
+
+/* modal shell */
+.bd-modal {
+  position: relative; isolation: isolate; width: 100%; max-width: 820px; max-height: calc(100dvh - 24px); display: flex; flex-direction: column; overflow: hidden; border-radius: 36px;
+  background: linear-gradient(135deg, rgba(255,251,242,.58), rgba(255,238,210,.34));
+  -webkit-backdrop-filter: blur(34px) saturate(230%); backdrop-filter: blur(34px) saturate(230%);
+  border: 1px solid var(--edge);
+  box-shadow: 0 1px 0 rgba(255,255,255,.95) inset, 0 -1px 0 rgba(255,255,255,.3) inset, 0 40px 120px rgba(26,10,0,.4);
+  animation: bdPop .42s cubic-bezier(.2,.9,.25,1.05);
+}
+.bd-modal::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%); mix-blend-mode: soft-light; }
+.bd-blob { position: absolute; border-radius: 50%; filter: blur(60px); z-index: -1; pointer-events: none; }
+.bd-blob.a { width: 320px; height: 320px; background: #F59A2A; opacity: .8; top: -100px; left: -70px; }
+.bd-blob.b { width: 340px; height: 340px; background: #F08A7C; opacity: .62; bottom: -120px; right: -80px; }
+.bd-blob.c { width: 220px; height: 220px; background: #F4CB4C; opacity: .6; top: 38%; right: 18%; }
+.bd-modal > *:not(.bd-blob) { position: relative; z-index: 1; }
+
+/* glass pieces */
+.bd-glass { background: linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,255,255,.22)); border: 1px solid var(--edge); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset; }
+
+/* header */
+.bd-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 22px 14px; }
+.bd-brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.bd-logo { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-size: 22px; flex: none;
+  background: linear-gradient(145deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 10px 24px rgba(200,120,10,.35); }
+.bd-head h2 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -.025em; }
+.bd-head p { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.bd-x { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; padding: 0; color: var(--ink-2);
+  background: rgba(255,255,255,.65); border: 1px solid var(--edge); box-shadow: 0 1px 0 rgba(255,255,255,.95) inset, 0 4px 14px rgba(120,70,20,.12); transition: transform .2s, background .2s, color .2s; flex: none; }
+.bd-x:hover { transform: scale(1.07); background: #fff; color: var(--gold-2); }
+.bd-x:active { transform: scale(.93); }
+
+/* step switch */
+.bd-steps { display: flex; margin: 0 22px; padding: 4px; border-radius: 999px; gap: 4px; width: max-content; max-width: calc(100% - 44px); }
+.bd-step { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 999px; border: 0; background: transparent; font-size: 12.5px; font-weight: 600; color: var(--ink-3); cursor: default; transition: background .3s, color .3s, box-shadow .3s; }
+.bd-step.done { color: var(--gold-2); cursor: pointer; }
+.bd-step.on { color: #fff; background: linear-gradient(180deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 6px 16px rgba(200,120,10,.35); }
+
+/* body */
+.bd-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 22px 8px; scrollbar-width: thin; }
+.bd-cols { display: grid; grid-template-columns: 1fr 1.05fr; gap: 14px; }
+
+.bd-panel { border-radius: 28px; padding: 18px; }
+.bd-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.bd-cal-head b { font-size: 15px; font-weight: 700; letter-spacing: -.015em; }
+.bd-nav { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; padding: 0; cursor: pointer; color: var(--ink-2);
+  background: rgba(255,255,255,.7); border: 1px solid var(--edge); transition: transform .2s, color .2s, background .2s; }
+.bd-nav:hover { transform: scale(1.08); color: var(--gold-2); background: #fff; }
+.bd-week { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
+.bd-week span { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: .06em; color: var(--gold-2); padding: 4px 0; }
+.bd-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.bd-day { aspect-ratio: 1; border: 0; border-radius: 50%; background: transparent; cursor: pointer; display: grid; place-items: center; font-size: 13.5px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; transition: background .2s, color .2s, transform .2s; }
+.bd-day:hover:not(:disabled):not(.on) { background: rgba(255,255,255,.85); color: var(--gold-2); }
+.bd-day:disabled { color: rgba(158,120,64,.32); cursor: not-allowed; }
+.bd-day.today:not(.on) { box-shadow: inset 0 0 0 1.5px var(--line); }
+.bd-day.on { color: #fff; background: linear-gradient(145deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 18px rgba(200,120,10,.4); transform: scale(1.04); }
+.bd-tz { margin-top: 14px; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.bd-tz .lbl { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.bd-slot-head { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.bd-slot-head b { font-size: 14px; font-weight: 700; letter-spacing: -.01em; }
+.bd-slot-head small { font-size: 12px; color: var(--ink-3); }
+.bd-group { margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-2); }
+.bd-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+.bd-slot { padding: 11px 6px; border-radius: 16px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; font-variant-numeric: tabular-nums;
+  background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset; transition: transform .2s, background .2s, color .2s, box-shadow .2s; }
+.bd-slot:hover:not(:disabled):not(.on) { background: #fff; color: var(--gold-2); transform: translateY(-1px); }
+.bd-slot:disabled { opacity: .4; cursor: not-allowed; }
+.bd-slot.on { color: #fff; border-color: transparent; background: linear-gradient(180deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 18px rgba(200,120,10,.38); }
+.bd-empty { display: grid; place-items: center; text-align: center; min-height: 200px; color: var(--ink-3); font-size: 13.5px; }
+.bd-empty i { display: block; font-style: normal; font-size: 34px; margin-bottom: 8px; }
+.bd-sep { height: 1px; margin: 2px 0 16px; background: linear-gradient(90deg, transparent, rgba(232,200,120,.9), transparent); }
+
+/* step 2 */
+.bd-form { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 8px; }
+.bd-summary { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 22px; }
+.bd-summary .ic { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: #fff; font-size: 16px; flex: none; background: linear-gradient(145deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 18px rgba(200,120,10,.32); }
+.bd-summary b { display: block; font-size: 14px; font-weight: 700; letter-spacing: -.01em; }
+.bd-summary small { display: block; margin-top: 2px; font-size: 12px; color: var(--ink-3); }
+.bd-field label { display: block; margin: 0 0 6px 6px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-2); }
+.bd-field input {
+  width: 100%; padding: 13px 18px; border-radius: 18px; font-size: 14.5px; color: var(--ink); outline: none;
+  background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(120,70,20,.06);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.bd-field input::placeholder { color: #B9A88C; }
+.bd-field input:focus { background: #fff; border-color: var(--gold-2); box-shadow: 0 0 0 4px rgba(184,134,11,.16); }
+.bd-captcha { display: flex; justify-content: center; padding-top: 2px; }
+@media (max-width: 360px) { .bd-captcha > div { transform: scale(.88); transform-origin: center; } }
+.bd-error { padding: 11px 16px; border-radius: 16px; font-size: 13px; color: #B3261E; background: rgba(255,240,238,.85); border: 1px solid rgba(240,170,160,.8); }
+
+/* success */
+.bd-done { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 34px 28px 30px; }
+.bd-check { position: relative; width: 78px; height: 78px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 34px; margin-bottom: 18px;
+  background: linear-gradient(145deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 14px 34px rgba(200,120,10,.42); animation: bdPopIn .5s cubic-bezier(.2,.9,.25,1.2); }
+.bd-check::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 2px solid rgba(200,120,10,.28); animation: bdRing 1.8s ease-out infinite; }
+.bd-done h3 { margin: 0 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -.03em; }
+.bd-done .when { font-size: 14px; font-weight: 600; color: var(--gold-2); }
+.bd-done p { max-width: 340px; margin: 12px auto 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); }
+.bd-done p b { color: var(--gold-2); }
+
+/* footer */
+.bd-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 22px 20px; }
+.bd-btn { border: 0; cursor: pointer; border-radius: 999px; padding: 13px 26px; font-size: 14px; font-weight: 600; color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(180deg, #E49A2C, var(--gold-1)); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 10px 26px rgba(200,120,10,.38);
+  transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s, opacity .2s; }
+.bd-btn:hover:not(:disabled) { transform: translateY(-1px) scale(1.02); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 14px 32px rgba(200,120,10,.46); }
+.bd-btn:active:not(:disabled) { transform: scale(.97); }
+.bd-btn:disabled { cursor: not-allowed; color: rgba(158,120,64,.7); background: rgba(232,200,120,.28); box-shadow: 0 1px 0 rgba(255,255,255,.7) inset; }
+.bd-btn.ghost { color: var(--ink-2); background: rgba(255,255,255,.65); border: 1px solid var(--edge); box-shadow: 0 1px 0 rgba(255,255,255,.95) inset, 0 4px 14px rgba(120,70,20,.1); padding: 12px 20px; }
+.bd-btn.ghost:hover { background: #fff; }
+.bd-spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%; animation: bdSpin .7s linear infinite; display: inline-block; }
+
+.bd-layer :focus-visible { outline: 2px solid var(--gold-1); outline-offset: 2px; }
+
+@keyframes bdFade { from { opacity: 0; } }
+@keyframes bdPop { from { opacity: 0; transform: translateY(22px) scale(.95); } }
+@keyframes bdPopIn { from { transform: scale(.4); opacity: 0; } }
+@keyframes bdRing { from { transform: scale(.9); opacity: .9; } to { transform: scale(1.35); opacity: 0; } }
+@keyframes bdSpin { to { transform: rotate(360deg); } }
+
+@media (max-width: 720px) {
+  .bd-cols { grid-template-columns: 1fr; }
+  .bd-modal { border-radius: 30px; }
+  .bd-head { padding: 16px 16px 12px; }
+  .bd-steps { margin: 0 16px; }
+  .bd-body { padding: 14px 14px 6px; }
+  .bd-foot { padding: 12px 16px 16px; }
+  .bd-panel { padding: 14px; border-radius: 24px; }
+  .bd-step { padding: 8px 13px; }
+}
+@media (prefers-reduced-motion: reduce) { .bd-layer *, .bd-layer *::before, .bd-layer *::after { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-transparency: reduce) { .bd-modal, .bd-backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; } .bd-modal { background: #FDFAF3; } }
+`;
+
 export default function BookDemoModal({ isOpen, onClose }) {
   const today = new Date();
   const [step, setStep]                 = useState(1);
@@ -49,12 +211,28 @@ export default function BookDemoModal({ isOpen, onClose }) {
   const widgetIdRef   = useRef(null);
   const recaptchaOn   = RECAPTCHA_SITE_KEY && RECAPTCHA_SITE_KEY !== "YOUR_RECAPTCHA_SITE_KEY";
 
-  // Lock body scroll
+  // Lock page scroll WITHOUT the layout jumping sideways:
+  // scrollbar-gutter keeps the scrollbar's space reserved while overflow is hidden.
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else        document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    if (!isOpen) return;
+    const html = document.documentElement;
+    const prevGutter = html.style.scrollbarGutter;
+    const prevOverflow = document.body.style.overflow;
+    html.style.scrollbarGutter = "stable";
+    document.body.style.overflow = "hidden";
+    return () => {
+      html.style.scrollbarGutter = prevGutter;
+      document.body.style.overflow = prevOverflow;
+    };
   }, [isOpen]);
+
+  // Esc closes
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose && onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, onClose]);
 
   // Reset on open
   useEffect(() => {
@@ -71,6 +249,12 @@ export default function BookDemoModal({ isOpen, onClose }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
+
+  // The captcha <div> is removed when we leave step 2 — forget its widget id,
+  // so it is rendered again when the user comes back (Back → Continue).
+  useEffect(() => {
+    if (step !== 2) widgetIdRef.current = null;
+  }, [step]);
 
   // Load reCAPTCHA script + render widget once we reach Step 2
   useEffect(() => {
@@ -123,6 +307,20 @@ export default function BookDemoModal({ isOpen, onClose }) {
     const sel = new Date(year, month, d);
     const now = new Date(); now.setHours(0,0,0,0);
     return sel < now;
+  };
+
+  const isTodayCell = (d) =>
+    year === today.getFullYear() && month === today.getMonth() && d === today.getDate();
+
+  // on today's date, slots that have already passed can't be booked
+  const slotPassed = (slot) => {
+    if (!selectedDay || !isTodayCell(selectedDay)) return false;
+    const [t, ap] = slot.split(" ");
+    let [h, m] = t.split(":").map(Number);
+    if (ap === "pm" && h !== 12) h += 12;
+    if (ap === "am" && h === 12) h = 0;
+    const now = new Date();
+    return h * 60 + m <= now.getHours() * 60 + now.getMinutes();
   };
 
   // ── EmailJS send function ──
@@ -195,320 +393,216 @@ export default function BookDemoModal({ isOpen, onClose }) {
     }
   };
 
-  const SlotBtn = ({ slot }) => (
-    <button
-      onClick={() => setSelectedSlot(slot)}
-      className={`px-3 py-2 rounded-xl text-[12px] font-semibold border transition-all duration-200 [font-family:'Cinzel',serif]
-        ${selectedSlot === slot
-          ? "bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8] border-transparent shadow-[0_4px_14px_rgba(200,120,10,0.4)]"
-          : "bg-[#FFFBF0] border-[#E8C878] text-[#5C4020] hover:border-[#B8860B] hover:text-[#B8860B] hover:shadow-[0_2px_10px_rgba(184,134,11,0.15)]"
-        }`}
-    >
-      {slot}
-    </button>
+  const renderSlots = (list) => (
+    <div className="bd-slots">
+      {list.map((slot) => (
+        <button
+          key={slot}
+          type="button"
+          disabled={slotPassed(slot)}
+          onClick={() => setSelectedSlot(slot)}
+          className={`bd-slot ${selectedSlot === slot ? "on" : ""}`}
+        >
+          {slot}
+        </button>
+      ))}
+    </div>
   );
 
+  const fields = [
+    { key: "name",    label: "Full Name *",          placeholder: "Arjun Sharma",         type: "text"  },
+    { key: "email",   label: "Email Address *",      placeholder: "arjun@company.com",    type: "email" },
+    { key: "company", label: "Company / Dealership", placeholder: "AutoBazaar Pvt. Ltd.", type: "text"  },
+    { key: "phone",   label: "Phone Number",         placeholder: "+91 98765 43210",      type: "tel"   },
+  ];
+
+  const canContinue = selectedDay && selectedSlot;
+  const canSubmit = form.name && form.email && !loading;
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-      <style>{`
-        @keyframes modalIn {
-          from { opacity: 0; transform: scale(0.92) translateY(20px); }
-          to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-        .emailjs-spinner {
-          width: 16px; height: 16px;
-          border: 2px solid rgba(255,248,232,0.3);
-          border-top-color: #FFF8E8;
-          border-radius: 50%;
-          animation: spin 0.7s linear infinite;
-          display: inline-block;
-        }
-      `}</style>
+    <div className="bd-layer" role="dialog" aria-modal="true" aria-label="Book a demo">
+      <style>{STYLES}</style>
 
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-[#1A0A00]/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="bd-backdrop" onClick={onClose} />
 
       {/* Modal */}
-      <div
-        className="relative w-full max-w-3xl bg-[#FDFAF3] rounded-3xl overflow-hidden
-          shadow-[0_30px_80px_rgba(26,10,0,0.35)] border border-[#E8C878]"
-        style={{ animation: "modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}
-      >
-        {/* Shimmer top */}
-        <div className="h-[3px] bg-gradient-to-r from-transparent via-[#E8C878] to-transparent" />
+      <div className="bd-modal">
+        <div className="bd-blob a" />
+        <div className="bd-blob b" />
+        <div className="bd-blob c" />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8C878]/50 bg-[#FBF3DC]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C8780A] to-[#B8860B]
-              flex items-center justify-center shadow-[0_4px_12px_rgba(200,120,10,0.3)]">
-              <span className="text-[#FFF8E8] text-lg">🕉️</span>
-            </div>
+        <div className="bd-head">
+          <div className="bd-brand">
+            <div className="bd-logo" aria-hidden="true">🕉️</div>
             <div>
-              <h2 className="text-[15px] font-black text-[#1A1008] [font-family:'Cinzel',serif] tracking-wide">
-                Book a Demo
-              </h2>
-              <p className="text-[11px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif]">
-                Product Discussion | Demo &nbsp;·&nbsp; 30 mins
-              </p>
+              <h2>Book a Demo</h2>
+              <p>Product Discussion | Demo &nbsp;·&nbsp; 30 mins</p>
             </div>
           </div>
-          <button onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-xl
-              border border-[#E8C878] bg-[#FFFBF0] text-[#5C4020]
-              hover:border-[#B8860B] hover:text-[#B8860B] transition-all duration-200">
-            <X size={16} />
-          </button>
+          <button type="button" className="bd-x" onClick={onClose} aria-label="Close"><X size={16} /></button>
         </div>
 
-        {/* Step pills */}
-        <div className="flex items-center gap-0 px-6 pt-4 pb-2">
-          {[
-            { n: 1, icon: <Calendar size={13} />, label: "Date & Time" },
-            { n: 2, icon: <User size={13} />,     label: "Your Info"   },
-          ].map(({ n, icon, label }, i) => (
-            <div key={n} className="flex items-center">
-              <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold
-                [font-family:'Cinzel',serif] transition-all duration-200
-                ${step === n
-                  ? "bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8] shadow-[0_3px_10px_rgba(200,120,10,0.3)]"
-                  : step > n ? "bg-[#E8C878]/40 text-[#B8860B]" : "text-[#9E7840]"
-                }`}>
-                {icon}&nbsp;{label}
-              </div>
-              {i < 1 && <div className="w-8 h-px bg-gradient-to-r from-[#E8C878] to-[#E8C878]/30 mx-1" />}
-            </div>
-          ))}
-        </div>
-        <div className="mx-6 h-px bg-gradient-to-r from-[#E8C878]/60 via-[#E8C878] to-[#E8C878]/60" />
-
-        {/* ── STEP 1: Calendar + Slots ── */}
-        {step === 1 && (
-          <div className="grid md:grid-cols-[1fr_1.1fr] max-h-[65vh] overflow-y-auto">
-
-            {/* Calendar */}
-            <div className="p-5 border-r border-[#E8C878]/40">
-              <div className="flex items-center justify-between mb-4">
-                <button onClick={prevMonth}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg
-                    border border-[#E8C878] text-[#5C4020] hover:border-[#B8860B]
-                    hover:text-[#B8860B] transition-all duration-200">
-                  <ChevronLeft size={14} />
-                </button>
-                <span className="text-[13px] font-bold text-[#1A1008] [font-family:'Cinzel',serif] tracking-wide">
-                  {MONTHS[month]} {year}
-                </span>
-                <button onClick={nextMonth}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg
-                    border border-[#E8C878] text-[#5C4020] hover:border-[#B8860B]
-                    hover:text-[#B8860B] transition-all duration-200">
-                  <ChevronRight size={14} />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-7 mb-2">
-                {DAYS.map(d => (
-                  <div key={d} className="text-center text-[10px] font-bold text-[#B8860B]
-                    [font-family:'Cinzel',serif] tracking-wider py-1">{d}</div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-7 gap-y-1">
-                {Array(firstDayOffs).fill(null).map((_, i) => <div key={`e${i}`} />)}
-                {Array(daysInMonth).fill(null).map((_, i) => {
-                  const d    = i + 1;
-                  const past = isPast(d);
-                  const sel  = selectedDay === d;
-                  return (
-                    <button key={d} disabled={past}
-                      onClick={() => { setSelectedDay(d); setSelectedSlot(null); }}
-                      className={`w-full aspect-square flex items-center justify-center rounded-xl
-                        text-[12px] font-semibold [font-family:'Cinzel',serif] transition-all duration-200
-                        ${past ? "text-[#C8B89A]/40 cursor-not-allowed"
-                          : sel
-                            ? "bg-gradient-to-br from-[#C8780A] to-[#B8860B] text-[#FFF8E8] shadow-[0_4px_14px_rgba(200,120,10,0.4)]"
-                            : "text-[#5C4020] hover:bg-[#F5EDD8] hover:text-[#B8860B]"
-                        }`}>
-                      {d}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="mt-4 flex items-center gap-2 bg-[#FBF3DC] border border-[#E8C878] rounded-xl px-3 py-2">
-                <span className="text-[#B8860B] text-xs">🌐</span>
-                <span className="text-[11px] text-[#5C4020] [font-family:'Cinzel',serif] font-semibold flex-1">
-                  Asia/Kolkata – IST (+05:30)
-                </span>
-                <ChevronDown size={12} className="text-[#B8860B]" />
-              </div>
-            </div>
-
-            {/* Slots */}
-            <div className="p-5 overflow-y-auto">
-              <div className="flex items-center gap-2 mb-4">
-                <Clock size={14} className="text-[#B8860B]" />
-                <span className="text-[12px] font-bold text-[#1A1008] [font-family:'Cinzel',serif] tracking-wide">
-                  Slot Availability
-                </span>
-                {selectedDay && (
-                  <span className="text-[10px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif]">
-                    — {MONTHS[month]} {selectedDay}
-                  </span>
-                )}
-              </div>
-
-              {!selectedDay ? (
-                <div className="flex flex-col items-center justify-center h-40 text-center">
-                  <span className="text-3xl mb-2">📅</span>
-                  <p className="text-[12px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif]">
-                    Please select a date to see available slots
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <p className="text-[10px] font-bold text-[#B8860B] uppercase tracking-widest [font-family:'Cinzel',serif] mb-3">Evening</p>
-                  <div className="grid grid-cols-3 gap-2 mb-5">
-                    {EVENING_SLOTS.map(s => <SlotBtn key={s} slot={s} />)}
-                  </div>
-                  <div className="h-px bg-gradient-to-r from-transparent via-[#E8C878] to-transparent mb-4" />
-                  <p className="text-[10px] font-bold text-[#B8860B] uppercase tracking-widest [font-family:'Cinzel',serif] mb-3">Night</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {NIGHT_SLOTS.map(s => <SlotBtn key={s} slot={s} />)}
-                  </div>
-                </>
-              )}
-            </div>
+        {/* Step switch */}
+        {!submitted && (
+          <div className="bd-steps bd-glass">
+            {[
+              { n: 1, icon: <Calendar size={13} />, label: "Date & Time" },
+              { n: 2, icon: <User size={13} />,     label: "Your Info"   },
+            ].map(({ n, icon, label }) => (
+              <button
+                key={n}
+                type="button"
+                className={`bd-step ${step === n ? "on" : step > n ? "done" : ""}`}
+                onClick={() => { if (step > n) setStep(n); }}
+              >
+                {icon}{label}
+              </button>
+            ))}
           </div>
         )}
 
-        {/* ── STEP 2: Your Info ── */}
-        {step === 2 && !submitted && (
-          <div className="p-6 max-h-[65vh] overflow-y-auto">
-            <div className="max-w-md mx-auto space-y-4">
+        {/* ── BODY ── */}
+        <div className="bd-body">
 
-              {/* Booking summary badge */}
-              <div className="bg-[#FBF3DC] border border-[#E8C878] rounded-2xl p-3 flex items-center gap-3 mb-6">
-                <span className="text-[#B8860B] text-xl">✦</span>
-                <div>
-                  <p className="text-[11px] font-bold text-[#1A1008] [font-family:'Cinzel',serif]">
-                    {MONTHS[month]} {selectedDay}, {year} · {selectedSlot}
-                  </p>
-                  <p className="text-[10px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif]">
-                    30-min Product Demo · IST (+05:30)
-                  </p>
+          {/* STEP 1: Calendar + Slots */}
+          {step === 1 && !submitted && (
+            <div className="bd-cols">
+              {/* Calendar */}
+              <div className="bd-panel bd-glass">
+                <div className="bd-cal-head">
+                  <button type="button" className="bd-nav" onClick={prevMonth} aria-label="Previous month"><ChevronLeft size={15} /></button>
+                  <b>{MONTHS[month]} {year}</b>
+                  <button type="button" className="bd-nav" onClick={nextMonth} aria-label="Next month"><ChevronRight size={15} /></button>
+                </div>
+
+                <div className="bd-week">
+                  {DAYS.map((d) => <span key={d}>{d}</span>)}
+                </div>
+
+                <div className="bd-days">
+                  {Array(firstDayOffs).fill(null).map((_, i) => <div key={`e${i}`} />)}
+                  {Array(daysInMonth).fill(null).map((_, i) => {
+                    const d    = i + 1;
+                    const past = isPast(d);
+                    const sel  = selectedDay === d;
+                    return (
+                      <button
+                        key={d}
+                        type="button"
+                        disabled={past}
+                        onClick={() => { setSelectedDay(d); setSelectedSlot(null); }}
+                        className={`bd-day ${sel ? "on" : ""} ${isTodayCell(d) ? "today" : ""}`}
+                      >
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="bd-tz bd-glass">
+                  <span aria-hidden="true">🌐</span>
+                  <span className="lbl">Asia/Kolkata – IST (+05:30)</span>
+                  <ChevronDown size={13} color="#B8860B" />
                 </div>
               </div>
 
-              {[
-                { key: "name",    label: "Full Name *",          placeholder: "Arjun Sharma",         type: "text"  },
-                { key: "email",   label: "Email Address *",      placeholder: "arjun@company.com",    type: "email" },
-                { key: "company", label: "Company / Dealership", placeholder: "AutoBazaar Pvt. Ltd.", type: "text"  },
-                { key: "phone",   label: "Phone Number",         placeholder: "+91 98765 43210",      type: "tel"   },
-              ].map(({ key, label, placeholder, type }) => (
-                <div key={key}>
-                  <label className="block text-[10px] font-bold text-[#B8860B] uppercase tracking-widest
-                    [font-family:'Cinzel',serif] mb-1.5">{label}</label>
+              {/* Slots */}
+              <div className="bd-panel bd-glass">
+                <div className="bd-slot-head">
+                  <Clock size={15} color="#B8860B" />
+                  <b>Slot Availability</b>
+                  {selectedDay && <small>— {MONTHS[month]} {selectedDay}</small>}
+                </div>
+
+                {!selectedDay ? (
+                  <div className="bd-empty">
+                    <div>
+                      <i>📅</i>
+                      Please select a date to see available slots
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="bd-group">Evening</p>
+                    {renderSlots(EVENING_SLOTS)}
+                    <div className="bd-sep" />
+                    <p className="bd-group">Night</p>
+                    {renderSlots(NIGHT_SLOTS)}
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: Your Info */}
+          {step === 2 && !submitted && (
+            <div className="bd-form">
+              <div className="bd-summary bd-glass">
+                <div className="ic">✦</div>
+                <div>
+                  <b>{MONTHS[month]} {selectedDay}, {year} · {selectedSlot}</b>
+                  <small>30-min Product Demo · IST (+05:30)</small>
+                </div>
+              </div>
+
+              {fields.map(({ key, label, placeholder, type }) => (
+                <div key={key} className="bd-field">
+                  <label htmlFor={`bd-${key}`}>{label}</label>
                   <input
+                    id={`bd-${key}`}
                     type={type}
                     placeholder={placeholder}
                     value={form[key]}
-                    onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                    className="w-full bg-[#FFFBF0] border border-[#E8C878] rounded-xl px-4 py-2.5
-                      text-[13px] text-[#1A1008] [font-family:'Cinzel',serif]
-                      placeholder:text-[#C8B89A] placeholder:italic placeholder:[font-family:'Cormorant_Garamond',serif]
-                      focus:outline-none focus:border-[#B8860B] focus:shadow-[0_0_0_3px_rgba(184,134,11,0.12)]
-                      transition-all duration-200"
+                    onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                   />
                 </div>
               ))}
 
               {/* reCAPTCHA v2 widget */}
               {recaptchaOn && (
-                <div className="flex justify-center pt-1">
+                <div className="bd-captcha">
                   <div ref={captchaRef} />
                 </div>
               )}
 
-              {/* Error message */}
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 text-[12px] text-red-600
-                  [font-family:'Cormorant_Garamond',serif] italic">
-                  ⚠️ {error}
-                </div>
-              )}
+              {error && <div className="bd-error" role="alert">⚠️ {error}</div>}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ── SUCCESS ── */}
-        {submitted && (
-          <div className="p-10 flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#C8780A] to-[#B8860B]
-              flex items-center justify-center text-3xl text-[#FFF8E8] mb-4
-              shadow-[0_8px_24px_rgba(200,120,10,0.4)]">
-              ✓
+          {/* SUCCESS */}
+          {submitted && (
+            <div className="bd-done">
+              <div className="bd-check">✓</div>
+              <h3>Demo Confirmed!</h3>
+              <div className="when">{MONTHS[month]} {selectedDay}, {year} · {selectedSlot}</div>
+              <p>
+                Booking details <b>vsr81150@gmail.com</b> par send kar diye gaye hain. We look forward to meeting you!
+              </p>
+              <button type="button" className="bd-btn" style={{ marginTop: 24 }} onClick={onClose}>Done ✦</button>
             </div>
-            <h3 className="text-xl font-black text-[#1A1008] [font-family:'Cinzel',serif] mb-2">
-              Demo Confirmed!
-            </h3>
-            <p className="text-[13px] text-[#9E7840] italic [font-family:'Cormorant_Garamond',serif] mb-1">
-              {MONTHS[month]} {selectedDay}, {year} · {selectedSlot}
-            </p>
-            <p className="text-[12px] text-[#5C4020] [font-family:'Cormorant_Garamond',serif] max-w-xs mt-2">
-              Booking details <span className="font-bold text-[#B8860B]">vsr81150@gmail.com</span> par
-              send kar diye gaye hain. We look forward to meeting you!
-            </p>
-            <button onClick={onClose}
-              className="mt-6 bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8]
-                px-8 py-2.5 rounded-full font-bold text-[12px] [font-family:'Cinzel',serif] tracking-widest
-                hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(200,120,10,0.4)] transition-all duration-200">
-              Done ✦
-            </button>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Footer */}
         {!submitted && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-[#E8C878]/50 bg-[#FBF3DC]">
-            {step === 2
-              ? <button onClick={() => setStep(1)}
-                  className="flex items-center gap-1.5 text-[11px] font-bold text-[#9E7840]
-                    [font-family:'Cinzel',serif] hover:text-[#5C4020] transition-colors">
-                  <ChevronLeft size={13} /> Back
-                </button>
-              : <div />
-            }
+          <div className="bd-foot">
+            {step === 2 ? (
+              <button type="button" className="bd-btn ghost" onClick={() => setStep(1)}>
+                <ChevronLeft size={15} /> Back
+              </button>
+            ) : <div />}
 
-            {step === 1
-              ? <button disabled={!selectedDay || !selectedSlot} onClick={() => setStep(2)}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-[12px]
-                    [font-family:'Cinzel',serif] tracking-widest transition-all duration-200
-                    ${selectedDay && selectedSlot
-                      ? "bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(200,120,10,0.4)]"
-                      : "bg-[#E8C878]/30 text-[#C8B89A] cursor-not-allowed"
-                    }`}>
-                  Continue <ChevronRight size={13} />
-                </button>
-
-              : <button
-                  disabled={!form.name || !form.email || loading}
-                  onClick={handleSubmit}
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-[12px]
-                    [font-family:'Cinzel',serif] tracking-widest transition-all duration-200
-                    ${form.name && form.email && !loading
-                      ? "bg-gradient-to-r from-[#C8780A] to-[#B8860B] text-[#FFF8E8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(200,120,10,0.4)]"
-                      : "bg-[#E8C878]/30 text-[#C8B89A] cursor-not-allowed"
-                    }`}>
-                  {loading
-                    ? <><span className="emailjs-spinner" /> Sending...</>
-                    : <>✦ Confirm Booking</>
-                  }
-                </button>
-            }
+            {step === 1 ? (
+              <button type="button" className="bd-btn" disabled={!canContinue} onClick={() => setStep(2)}>
+                Continue <ChevronRight size={15} />
+              </button>
+            ) : (
+              <button type="button" className="bd-btn" disabled={!canSubmit} onClick={handleSubmit}>
+                {loading ? <><span className="bd-spin" /> Sending...</> : <>✦ Confirm Booking</>}
+              </button>
+            )}
           </div>
         )}
       </div>
